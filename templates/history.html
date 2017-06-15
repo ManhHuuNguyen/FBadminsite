@@ -101,9 +101,8 @@
             console.log("Error");
         });
         $scope.admins=[];
-        window.alert("Hello");
+        window.alert(typeof $scope.superstatus);
         if ($scope.superstatus=='T') {
-            window.alert("Hey");
             $http({
                 method: 'GET',
                 url: '/return_admins'
