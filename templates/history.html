@@ -32,7 +32,7 @@
                 <th>Post deleted</th>
                 <th>User banned</th>
             </tr>
-            <tr id='posts' ng-repeat="admin in admins | orderBy : 'post_deleted' + 'user_banned'">
+            <tr id='posts' ng-repeat="admin in admins | orderBy : 'user_banned'">
                 <td>a{ admin.name }a</td>
                 <td> a{ admin.post_deleted }a</td>
                 <td> a{ admin.user_banned }a</td>
