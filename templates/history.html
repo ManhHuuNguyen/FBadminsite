@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/history.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="history_page" ng-controller="myCtrl" id="del_post">
+
+<div id="left_column">
+    <h3 id="username">{{ name }}</h3>
+    <img id="avatar" src="{{ picture }}">
+    <p>Posts deleted: {{ post_num }}  Users ban: {{ user_num }}</p>
+    <nav>
+        <ul id='nav_bar'>
+            <li><a href='/main'>Home</a></li>
+            <li><a href='/history'>History</a></li>
+            <li><a href='/ban_list'>Ban list</a></li>
+            <li><a href='/logout'>Log out</a></li>
+        </ul>
+    </nav>
+</div>
+<div id="right_column">
+
+    <div id="searchBoxes">
+        <input type="text" ng-model="search.author">
+    </div>
+
+    <table style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 35%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 35%;">
+        </colgroup>
+        <tr>
+            <th>Type</th>
+            <th>Content</th>
+            <th>Author ID</th>
+            <th>Author</th>
+            <th>Reason </th>
+        </tr>
+        <tr id='posts' ng-repeat="post in past_posts | filter: search">
+            <td>a{ post.type }a</td>
+            <td> a{ post.content }a</td>
+            <td> a{ post.author_id }a</td>
+            <td>a{ post.author }a</td>
+            <td>a{ post.reason }a</td>
+        </tr>
+    </table>
+
+</div>
+<script>
+
+    var application = angular.module("history_page", []);
+
+    application.config(['$interpolateProvider', function ($interpolateProvider) {
+        $interpolateProvider.startSymbol('a{');
+        $interpolateProvider.endSymbol('}a');
+    }]);
+    application.controller("myCtrl", function ($scope, $http) {
+        $http({
+            method: 'GET',
+            url: '/return_history'
+        }).then(function successCallback(response) {
+            $scope.historical_records = response.data;
+        }, function errorCallback(response) {
+            console.log("Error");
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="dashboard" ng-controller="myCtrl" id="del_post">
+
+<div id="left_column">
+    <h3 id="username">{{ name }}</h3>
+    <img id="avatar" src="{{ picture }}">
+    <p>Posts deleted: {{ post_num }}  Users ban: {{ user_num }}</p>
+    <nav>
+        <ul id='nav_bar'>
+            <li><a href='/main'>Home</a></li>
+            <li><a href='/history'>History</a></li>
+            <li><a href='/ban_list'>Ban list</a></li>
+            <li><a href='/logout'>Log out</a></li>
+        </ul>
+    </nav>
+</div>
+<div id="right_column">
+
+    <div id="searchBoxes">
+        <input type="text" ng-model="search.author">
+    </div>
+
+    <table style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 50%;">
+        </colgroup>
+        <tr>
+            <th>Author</th>
+            <th>ID</th>
+            <th>Time</th>
+            <th>Content</th>
+        </tr>
+        <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
+            <td>a{ post.author }a
+                <button> Ban </button>
+                <button id="a{$index}a" class='a{post._id}a' onclick="deletePost(this)"> Delete</button>
+            </td>
+            <td> a{ post._id }a </td>
+            <td> a{ post.time }a </td>
+            <td>a{ post.content }a </td>
+        </tr>
+    </table>
+
+</div>
+<script>
+
+    var application = angular.module("dashboard", []);
+
+    application.config(['$interpolateProvider', function ($interpolateProvider) {
+        $interpolateProvider.startSymbol('a{');
+        $interpolateProvider.endSymbol('}a');
+    }]);
+    application.controller("myCtrl", function ($scope, $http) {
+        $http({
+            method: 'GET',
+            url: '/return_data'
+        }).then(function successCallback(response) {
+            $scope.suspicious_posts = response.data;
+        }, function errorCallback(response) {
+            console.log("Error");
+        });
+
+        $scope.delPost = function (class_name, id, reason) {
+            $scope.suspicious_posts.splice(id, 1);
+            var dataObj = JSON.stringify({type: 'post_deletion', id: class_name, reason: reason});
+            $http({
+                method: 'POST',
+                url: '/return_data',
+                data: dataObj
+            }).then(function successCallback(response) {
+                console.log(" post success!");
+            }, function errorCallback(response) {
+                console.log("Error");
+            });
+        };
+    });
+
+    function deletePost(obj) {
+        var reason = popUpBox();
+        angular.element(document.getElementById("del_post")).scope().delPost(obj.className, obj.id, reason);
+    }
+    function popUpBox() {
+        return prompt("Enter reason:", "");
+    }
+</script>
+</body>
+</html>

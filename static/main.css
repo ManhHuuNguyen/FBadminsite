@@ -1,0 +1,64 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#searchBoxes {
+    padding: 10px;
+}
+
+#right_column {
+    padding: 10px;
+    float: right;
+    width: 75%;
+}
+
+#left_column {
+    float: left;
+    width: 22%;
+}
+
+#avatar {
+    width: 20%;
+    float: left;
+    margin: 5px;
+}
+
+#username {
+    width: 70%;
+    float: right;
+}
+
+ul#nav_bar {
+    list-style: none;
+}
+
+ul#nav_bar li {
+    display: inline-block;
+}
+
+ul#nav_bar li a {
+    display: inline-block;
+    background-color: #fefefe;
+    border: 1px solid;
+    list-style: none;
+    padding: 3px;
+    border-radius: 5px 5px;
+    color: rgb(40, 40, 40);
+    text-decoration: none;
+}
+
+ul#nav_bar li a:hover {
+    background-color: rgb(150, 150, 150);
+}
