@@ -65,7 +65,7 @@
             method: 'GET',
             url: '/return_history'
         }).then(function successCallback(response) {
-            $scope.historical_records = response.data;
+            $scope.past_posts = response.data;
         }, function errorCallback(response) {
             console.log("Error");
         });
