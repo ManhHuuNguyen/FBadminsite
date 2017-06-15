@@ -56,7 +56,7 @@ def return_data():
             post_id = json_post.get('id')
             post_to_delete = post_collection.find_one({"_id": post_id})
             reason = json_post.get('reason')
-            admin_id = session["current_user"]["_id"]
+            admin_id = session["current_user"]
             text = post_to_delete['content']
             author = post_to_delete['author']
             author_id = post_to_delete['author_id']
@@ -66,7 +66,7 @@ def return_data():
             # delete on fb
             real_post_id = group_id + "_" + post_id
             # update admin's number
-            admin_collection.update({"_id": session["current_user"]["_id"]}, {"$inc": {'post_deleted': 1}})
+            admin_collection.update({"_id": session["current_user"]}, {"$inc": {'post_deleted': 1}})
             r = requests.delete("https://graph.facebook.com/DELETE /v2.9/{}".format(real_post_id), params={'access_token': special_token})
         return "Log in successfully. Congrats!"
 
@@ -84,10 +84,7 @@ def banlist():
 
 @app.route("/history")
 def history_page():
-    return render_template("history.html", name=session['current_user']['name'],
-                                           picture=session['image'],
-                                           post_num=session['current_user']['post_deleted'],
-                                           user_num=session['current_user']['user_banned'])
+    return render_template("history.html")
 
 
 @app.route("/return_history")
@@ -97,11 +94,7 @@ def return_history():
 
 @app.route("/main")
 def mainpage():
-    # the lines below are for testing purposes only -- remember to delete them
-    return render_template("main.html", name=session['current_user']['name'],
-                                        picture=session['image'],
-                                        post_num=session['current_user']['post_deleted'],
-                                        user_num=session['current_user']['user_banned'])
+    return render_template("main.html")
 
 
 @app.route("/logout")
@@ -122,7 +115,7 @@ def facebook_authorized(resp):
     result = admin_collection.find_one({"_id": me.data['id']})
     if result:
         session['image'] = me.data['picture']['data']['url']
-        session["current_user"] = result
+        session["current_user"] = me.data['id']
         return redirect(url_for('mainpage'))
     return "Well well well... What do we have here? A burglar, or a thief? I know who you are user {}".format(me.data['id'])
 
@@ -134,6 +127,11 @@ def authentication_page():
     else:
         return redirect(url_for("login"))
 
+
+@app.route('/return_admin_info')
+def return_admin_info():
+    result = admin_collection.find_one({"_id": session["current_user"]})
+    return dumps([result['name'], session['image'], result['post_deleted'], result['user_banned']])
 
 if __name__ == '__main__':
     app.run()
