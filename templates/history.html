@@ -100,18 +100,15 @@
         }, function errorCallback(response) {
             console.log("Error");
         });
-        $scope.admins=[];
-        window.alert(typeof $scope.superstatus);
-        if ($scope.superstatus=='T') {
-            $http({
-                method: 'GET',
-                url: '/return_admins'
-            }).then(function successCallback(response) {
-                $scope.admins = response.data;
-            }, function errorCallback(response) {
-                console.log("Error");
-            });
-        }
+        $http({
+            method: 'GET',
+            url: '/return_admins'
+        }).then(function successCallback(response) {
+            $scope.admins = response.data;
+        }, function errorCallback(response) {
+            console.log("Error");
+        });
+
     });
 
 </script>

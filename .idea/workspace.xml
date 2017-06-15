@@ -51,8 +51,8 @@
       <file leaf-file-name="history.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/history.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="103" column="48" lean-forward="false" selection-start-line="103" selection-start-column="48" selection-end-line="103" selection-end-column="48" />
+            <state relative-caret-position="517">
+              <caret line="110" column="0" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -883,8 +883,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/history.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="103" column="48" lean-forward="false" selection-start-line="103" selection-start-column="48" selection-end-line="103" selection-end-column="48" />
+        <state relative-caret-position="517">
+          <caret line="110" column="0" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
           <folding />
         </state>
       </provider>
