@@ -52,7 +52,7 @@
         <entry file="file://$PROJECT_DIR$/templates/history.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="352">
-              <caret line="34" column="66" lean-forward="true" selection-start-line="34" selection-start-column="66" selection-end-line="34" selection-end-column="66" />
+              <caret line="34" column="81" lean-forward="false" selection-start-line="34" selection-start-column="81" selection-end-line="34" selection-end-column="81" />
               <folding />
             </state>
           </provider>
@@ -884,7 +884,7 @@
     <entry file="file://$PROJECT_DIR$/templates/history.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
-          <caret line="34" column="66" lean-forward="true" selection-start-line="34" selection-start-column="66" selection-end-line="34" selection-end-column="66" />
+          <caret line="34" column="81" lean-forward="false" selection-start-line="34" selection-start-column="81" selection-end-line="34" selection-end-column="81" />
           <folding />
         </state>
       </provider>
