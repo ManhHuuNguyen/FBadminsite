@@ -89,7 +89,7 @@ def history_page():
 
 @app.route("/return_history")
 def return_history():
-    return dumps([item for item in history.find({})])
+    return dumps([item for item in history.find({"admin_id": session["current_user"]})])
 
 
 @app.route("/main")
