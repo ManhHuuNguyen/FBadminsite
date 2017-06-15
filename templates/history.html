@@ -11,7 +11,7 @@
 <div id="left_column">
     <h3 id="username">a{ name }a</h3>
     <img id="avatar" src="a{ avatar }a">
-    <p>Posts deleted: a{ post_num }a  Users ban: a{ user_num }a</p>
+    <p>Posts deleted: a{ post_num }a Users ban: a{ user_num }a</p>
     <nav>
         <ul id='nav_bar'>
             <li><a href='/main'>Home</a></li>
@@ -20,6 +20,25 @@
             <li><a href='/logout'>Log out</a></li>
         </ul>
     </nav>
+    <div ng-if="superstatus=='T'">
+        <table style="width: 100%">
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 25%;">
+                <col span="1" style="width:25%;">
+            </colgroup>
+            <tr>
+                <th>Admin</th>
+                <th>Post deleted</th>
+                <th>User banned</th>
+            </tr>
+            <tr id='posts' ng-repeat="admin in admins">
+                <td>a{ admin.name }a</td>
+                <td> a{ admin.post_deleted }a</td>
+                <td> a{ admin.user_banned }a</td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div id="right_column">
 
@@ -40,7 +59,7 @@
             <th>Content</th>
             <th>Author ID</th>
             <th>Author</th>
-            <th>Reason </th>
+            <th>Reason</th>
         </tr>
         <tr id='posts' ng-repeat="post in past_posts | filter: search">
             <td>a{ post.type }a</td>
@@ -77,9 +96,20 @@
             $scope.avatar = response.data[1];
             $scope.post_num = response.data[2];
             $scope.user_num = response.data[3];
+            $scope.superstatus = response.data[4];
         }, function errorCallback(response) {
             console.log("Error");
         });
+        if ($scope.superstatus=='T') {
+            $http({
+                method: 'GET',
+                url: '/return_admins'
+            }).then(function successCallback(response) {
+                $scope.admins = response.data;
+            }, function errorCallback(response) {
+                console.log("Error");
+            });
+        }
     });
 
 </script>

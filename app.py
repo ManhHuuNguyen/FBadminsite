@@ -89,7 +89,9 @@ def history_page():
 
 @app.route("/return_history")
 def return_history():
-    return dumps([item for item in history.find({"admin_id": session["current_user"]})])
+    if session['superstatus'] == 'F':
+        return dumps([item for item in history.find({"admin_id": session["current_user"]})])
+    return dumps(item for item in history.find({}))
 
 
 @app.route("/main")
@@ -101,6 +103,7 @@ def mainpage():
 def log_out():
     session.pop('current_user')
     session.pop('image')
+    session.pop('superstatus')
     return redirect(url_for("authentication_page"))
 
 
@@ -116,6 +119,7 @@ def facebook_authorized(resp):
     if result:
         session['image'] = me.data['picture']['data']['url']
         session["current_user"] = me.data['id']
+        session['superstatus'] = result['superstatus']
         return redirect(url_for('mainpage'))
     return "Well well well... What do we have here? A burglar, or a thief? I know who you are user {}".format(me.data['id'])
 
@@ -131,7 +135,12 @@ def authentication_page():
 @app.route('/return_admin_info')
 def return_admin_info():
     result = admin_collection.find_one({"_id": session["current_user"]})
-    return dumps([result['name'], session['image'], result['post_deleted'], result['user_banned']])
+    return dumps([result['name'], session['image'], result['post_deleted'], result['user_banned'], result['superstatus']])
+
+
+@app.route("/return_admins")
+def return_admins():
+    return dumps([admin for admin in admin_collection.find({})])
 
 if __name__ == '__main__':
     app.run()
