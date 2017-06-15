@@ -85,7 +85,7 @@ def banlist():
 
 @app.route("/history")
 def history_page():
-    return render_template("history.html")
+    return render_template("history.html", name=session['admin_name'], picture=session['image'], post_num=0, user_num=0)
 
 
 @app.route("/return_history")
@@ -96,9 +96,6 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # the lines below are for testing purposes only -- remember to delete them
-    session['admin_name'] = "Duc Nguyen"
-    session['image'] = "https://scontent.xx.fbcdn.net/v/t1.0-1/c60.24.480.480/s50x50/18222173_618058751725157_3507933723495110676_n.jpg?oh=dea57785ae2a53658556d6155f8d454e&oe=59E440F1"
-    # end
     return render_template("main.html", name=session['admin_name'], picture=session['image'], post_num=0, user_num=0)
 
 
