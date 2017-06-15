@@ -84,7 +84,7 @@
 
         $scope.delPost = function (class_name, id, reason) {
             $scope.suspicious_posts.splice(id, 1);
-            $scope.post_num++;
+            $scope.post_num = parseInt($scope.post_num)+1;
             var dataObj = JSON.stringify({type: 'post_deletion', id: class_name, reason: reason});
             $http({
                 method: 'POST',
