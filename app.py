@@ -21,7 +21,6 @@ post_collection = db['posts']
 user_collection = db['users']
 admin_collection = db['admins']
 history = db['history']
-hereherehere = "hearhearhear"
 APP_ID = config.APP_ID
 APP_SECRET = config.APP_SECRET
 app.secret_key = config.secret_key
