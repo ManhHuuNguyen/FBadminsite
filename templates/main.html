@@ -98,10 +98,10 @@
         };
 
         $scope.banUser = function (class_name, id, reason) {
+            $scope.user_num = parseInt($scope.user_num)+1;
             $scope.suspicious_posts = $scope.suspicious_posts.filter(function (item) {
                 return item.author_id == id;
             });
-            $scope.user_num = parseInt($scope.user_num)+1;
         };
 
     });
