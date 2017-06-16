@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../static/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 </head>
-<body ng-app="dashboard" ng-controller="myCtrl" id="del_post">
+<body ng-app="dashboard" ng-controller="myCtrl" id="angular_app">
 
 <div id="left_column">
     <h3 id="username">a{ name }a</h3>
@@ -42,8 +42,8 @@
         </tr>
         <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
             <td>a{ post.author }a
-                <button> Ban </button>
-                <button id="a{$index}a" class='a{post._id}a' onclick="deletePost(this)"> Delete</button>
+                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="banUser(this)"> Ban </button>
+                <button id="a{ $index }a" class='a{ post._id }a' onclick="deletePost(this)"> Delete</button>
             </td>
             <td> a{ post._id }a </td>
             <td> a{ post.time }a </td>
@@ -96,15 +96,31 @@
                 console.log("Error");
             });
         };
+
+        $scope.banUser = function (class_name, id, reason) {
+            $scope.suspicious_posts = suspicious_posts.filter($scope.post_from_user(id));
+            $scope.user_num = parseInt($scope.user_num)+1;
+        };
+
+        $scope.post_from_user = function (obj, id) {
+            return obj._id == id;
+        }
     });
 
     function deletePost(obj) {
         var reason = popUpBox();
-        angular.element(document.getElementById("del_post")).scope().delPost(obj.className, obj.id, reason);
+        angular.element(document.getElementById("angular_app")).scope().delPost(obj.className, obj.id, reason);
     }
+
+    function banUser(obj){
+        var reason = popUpBox();
+        angular.element(document.getElementById("angular_app")).scope().banUser(obj.className, obj.id, reason);
+    }
+
     function popUpBox() {
         return prompt("Enter reason:", "");
     }
+
 </script>
 </body>
 </html>
