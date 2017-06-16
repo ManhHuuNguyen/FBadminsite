@@ -91,6 +91,10 @@ def return_data():
             # delete on facebook
             # update admin's number
             admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
+
+        elif type == "unban":
+            user_id = json_post.get("id")
+            banned_collection.delete_one({"_id": user_id})
         return "Log in successfully. Congrats!"
 
 
@@ -103,6 +107,11 @@ def login():
 @app.route('/ban_list')
 def banlist():
     return render_template("ban_list.html")
+
+
+@app.route("/return_banlist")
+def return_banlist():
+    return dumps([user for user in banned_collection.find({})])
 
 
 @app.route("/history")
@@ -120,9 +129,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    session["current_user"] = "643833832487975"
-    session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
-    session['superstatus'] = "T"
+    # session["current_user"] = "643833832487975"
+    # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    # session['superstatus'] = "T"
     # test
     return render_template("main.html")
 
