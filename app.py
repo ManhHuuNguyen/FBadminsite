@@ -20,6 +20,7 @@ db.authenticate(config.db_name, config.db_password)
 post_collection = db['posts']
 user_collection = db['users']
 admin_collection = db['admins']
+banned_collection = db['the_condemned']
 history = db['history']
 APP_ID = config.APP_ID
 APP_SECRET = config.APP_SECRET
@@ -65,9 +66,45 @@ def return_data():
             post_collection.delete_one(post_to_delete)
             # delete on fb
             real_post_id = group_id + "_" + post_id
+            r = requests.delete("https://graph.facebook.com/DELETE/v2.9/{}".format(real_post_id),
+                                params={'access_token': special_token})
             # update admin's number
             admin_collection.update({"_id": session["current_user"]}, {"$inc": {'post_deleted': 1}})
-            r = requests.delete("https://graph.facebook.com/DELETE /v2.9/{}".format(real_post_id), params={'access_token': special_token})
+
+        # elif type == 'user_ban':
+        #     # add to history
+        #     post_id = json_post.get('id')
+        #     post_to_delete = post_collection.find_one({"_id": post_id})
+        #     reason = json_post.get('reason')
+        #     admin_id = session["current_user"]
+        #     text = post_to_delete['content']
+        #     author = post_to_delete['author']
+        #     author_id = post_to_delete['author_id']
+        #     history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "content": text, "author": author, "author_id": author_id})
+        #     # add to banned_collection
+        #     banned_collection.insert_one({"_id": author_id, "name": author})
+        #     # delete in db
+        #     post_collection.delete_one(post_to_delete)
+        #     # delete on fb
+        #     real_post_id = group_id + "_" + post_id
+        #     r = requests.delete("https://graph.facebook.com/DELETE/v2.9/{}".format(real_post_id),
+        #                         params={'access_token': special_token})
+        #     # update admin's number
+        #     admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
+        elif type == 'user_ban':
+            # add to history
+            author_id = json_post.get('id')
+            admin_id = session["current_user"]
+            reason = json_post.get('reason')
+            author = user_collection.find_one({"_id": author_id})
+            author_name = author["name"]
+            history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
+            # add to list of the condemned
+            banned_collection.insert_one(author)
+            # delete in db
+            post_collection.delete_many({"author_id": author_id})
+            # update admin's number
+            admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
         return "Log in successfully. Congrats!"
 
 
@@ -96,6 +133,11 @@ def return_history():
 
 @app.route("/main")
 def mainpage():
+    # test
+    session["current_user"] = "643833832487975"
+    session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    session['superstatus']= "T"
+    # test
     return render_template("main.html")
 
 

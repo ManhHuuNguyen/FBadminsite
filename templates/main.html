@@ -98,10 +98,20 @@
         };
 
         $scope.banUser = function (class_name, id, reason) {
+            $scope.suspicious_posts = $scope.suspicious_posts.filter(function (a_post) {
+                return a_post.author_id != id;
+            });
             $scope.user_num = parseInt($scope.user_num)+1;
-{#            $scope.suspicious_posts = $scope.suspicious_posts.filter(function (item) {#}
-{#                return item.author_id == id;#}
-{#            });#}
+            var dataObj = JSON.stringify({type:'user_ban', id: id, reason: reason});
+            $http({
+                method: 'POST',
+                url: '/return_data',
+                data: dataObj
+            }).then(function successCallback(response) {
+                console.log(" post success!");
+            }, function errorCallback(response) {
+                console.log("Error");
+            });
         };
 
     });

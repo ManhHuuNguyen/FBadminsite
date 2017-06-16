@@ -7,6 +7,14 @@ db = connection["adminsitedb"]
 db.authenticate(config.db_name, config.db_password)
 post_collection = db['posts']
 user_collection = db['users']
+history = db['history']
+banned_collection = db['the_condemned']
+
+# clear database
+post_collection.delete_many({})
+user_collection.delete_many({})
+history.delete_many({})
+banned_collection.delete_many({})
 
 posts, comments, users = crawl_the_group()
 for user in users:
