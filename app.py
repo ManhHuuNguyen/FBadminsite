@@ -5,12 +5,13 @@ import config
 from bson.json_util import dumps
 from facepy import GraphAPI
 import requests
-
-# special access token used for delete only
-special_token = "EAACEdEose0cBANoyeSET7hzZBgM4omTDRfK41LDZClIQRSd4tWQZBfvGQYjxRA2XNTv3weVTmClGx8axZBCgeQJVkNE2ZCtAq89GGKQrZAX3fRD9KsFIkiFOKrGDbEay1GfZB53yg1SB97YbCWEV5njVZAOz3xT2kmgZA1gMupiZAj0r3lCJs91GbGD51XdSH4URoZD"
+from datetime import datetime
 
 app = Flask(__name__)
 oauth = OAuth()
+
+# special token for delete only
+special_token = "special_token"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -22,6 +23,9 @@ user_collection = db['users']
 admin_collection = db['admins']
 banned_collection = db['the_condemned']
 history = db['history']
+
+banned_collection.ensure_index("createdAt", expireAfterSeconds=604800)  # equivalent to 1 week
+
 APP_ID = config.APP_ID
 APP_SECRET = config.APP_SECRET
 app.secret_key = config.secret_key
@@ -71,26 +75,6 @@ def return_data():
             # update admin's number
             admin_collection.update({"_id": session["current_user"]}, {"$inc": {'post_deleted': 1}})
 
-        # elif type == 'user_ban':
-        #     # add to history
-        #     post_id = json_post.get('id')
-        #     post_to_delete = post_collection.find_one({"_id": post_id})
-        #     reason = json_post.get('reason')
-        #     admin_id = session["current_user"]
-        #     text = post_to_delete['content']
-        #     author = post_to_delete['author']
-        #     author_id = post_to_delete['author_id']
-        #     history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "content": text, "author": author, "author_id": author_id})
-        #     # add to banned_collection
-        #     banned_collection.insert_one({"_id": author_id, "name": author})
-        #     # delete in db
-        #     post_collection.delete_one(post_to_delete)
-        #     # delete on fb
-        #     real_post_id = group_id + "_" + post_id
-        #     r = requests.delete("https://graph.facebook.com/DELETE/v2.9/{}".format(real_post_id),
-        #                         params={'access_token': special_token})
-        #     # update admin's number
-        #     admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
         elif type == 'user_ban':
             # add to history
             author_id = json_post.get('id')
@@ -100,9 +84,10 @@ def return_data():
             author_name = author["name"]
             history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
             # add to list of the condemned
-            banned_collection.insert_one(author)
+            banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author["name"]})
             # delete in db
             post_collection.delete_many({"author_id": author_id})
+            # delete on facebook
             # update admin's number
             admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
         return "Log in successfully. Congrats!"
@@ -136,7 +121,7 @@ def mainpage():
     # test
     session["current_user"] = "643833832487975"
     session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
-    session['superstatus']= "T"
+    session['superstatus'] = "T"
     # test
     return render_template("main.html")
 
