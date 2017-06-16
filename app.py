@@ -24,6 +24,7 @@ admin_collection = db['admins']
 banned_collection = db['the_condemned']
 history = db['history']
 
+# user's ban will be lifted in a week's time
 banned_collection.ensure_index("createdAt", expireAfterSeconds=604800)  # equivalent to 1 week
 
 APP_ID = config.APP_ID
