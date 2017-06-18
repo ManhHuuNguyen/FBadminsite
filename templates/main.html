@@ -130,12 +130,16 @@
 
     function deletePost(obj) {
         var reason = popUpBox();
-        angular.element(document.getElementById("angular_app")).scope().delPost(obj.className, obj.id, reason);
+        if (reason) {
+            angular.element(document.getElementById("angular_app")).scope().delPost(obj.className, obj.id, reason);
+        }
     }
 
     function banUser(obj) {
         var reason = popUpBox();
-        angular.element(document.getElementById("angular_app")).scope().banUser(obj.className, obj.id, reason);
+        if (reason) {
+            angular.element(document.getElementById("angular_app")).scope().banUser(obj.className, obj.id, reason);
+        }
     }
 
     function popUpBox() {
