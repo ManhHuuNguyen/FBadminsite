@@ -11,7 +11,7 @@
 <div id="left_column">
     <h3 id="username">a{ name }a</h3>
     <img id="avatar" src="a{ avatar }a">
-    <p>Posts deleted: a{ post_num }a  Users ban: a{ user_num }a</p>
+    <p>Posts deleted: a{ post_num }a Users ban: a{ user_num }a</p>
     <nav>
         <ul id='nav_bar'>
             <li><a href='/main'>Home</a></li>
@@ -42,12 +42,12 @@
         </tr>
         <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
             <td>a{ post.author }a
-                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="banUser(this)"> Ban </button>
+                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="banUser(this)"> Ban</button>
                 <button id="a{ $index }a" class='a{ post._id }a' onclick="deletePost(this)"> Delete</button>
             </td>
-            <td> a{ post._id }a </td>
-            <td> a{ post.time }a </td>
-            <td>a{ post.content }a </td>
+            <td> a{ post._id }a</td>
+            <td> a{ post.time }a</td>
+            <td>a{ post.content }a</td>
         </tr>
     </table>
 
@@ -61,6 +61,7 @@
         $interpolateProvider.endSymbol('}a');
     }]);
     application.controller("myCtrl", function ($scope, $http) {
+
         $http({
             method: 'GET',
             url: '/return_data'
@@ -69,6 +70,17 @@
         }, function errorCallback(response) {
             console.log("Error");
         });
+
+        setInterval(function () {
+            $http({
+                method: 'GET',
+                url: '/return_data'
+            }).then(function successCallback(response) {
+                $scope.suspicious_posts = response.data;
+            }, function errorCallback(response) {
+                console.log("Error");
+            });
+        }, 300000);
 
         $http({
             method: 'GET',
@@ -84,7 +96,7 @@
 
         $scope.delPost = function (class_name, id, reason) {
             $scope.suspicious_posts.splice(id, 1);
-            $scope.post_num = parseInt($scope.post_num)+1;
+            $scope.post_num = parseInt($scope.post_num) + 1;
             var dataObj = JSON.stringify({type: 'post_deletion', id: class_name, reason: reason});
             $http({
                 method: 'POST',
@@ -101,8 +113,8 @@
             $scope.suspicious_posts = $scope.suspicious_posts.filter(function (a_post) {
                 return a_post.author_id != id;
             });
-            $scope.user_num = parseInt($scope.user_num)+1;
-            var dataObj = JSON.stringify({type:'user_ban', id: id, reason: reason});
+            $scope.user_num = parseInt($scope.user_num) + 1;
+            var dataObj = JSON.stringify({type: 'user_ban', id: id, reason: reason});
             $http({
                 method: 'POST',
                 url: '/return_data',
@@ -121,7 +133,7 @@
         angular.element(document.getElementById("angular_app")).scope().delPost(obj.className, obj.id, reason);
     }
 
-    function banUser(obj){
+    function banUser(obj) {
         var reason = popUpBox();
         angular.element(document.getElementById("angular_app")).scope().banUser(obj.className, obj.id, reason);
     }
