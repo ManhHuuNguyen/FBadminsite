@@ -42,14 +42,28 @@
         </tr>
         <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
             <td>a{ post.author }a
-                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="banUser(this)"> Ban</button>
-                <button id="a{ $index }a" class='a{ post._id }a' onclick="deletePost(this)"> Delete</button>
+                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="openPopUp(this, 'ban')"> Ban</button>
+                <button id="a{ $index }a" class='a{ post._id }a' onclick="openPopUp(this, 'delete')"> Delete</button>
             </td>
             <td> a{ post._id }a</td>
             <td> a{ post.time }a</td>
             <td>a{ post.content }a</td>
         </tr>
     </table>
+
+    <div id="pop-up">
+        <div class="popup-content">
+            <span class="close" onclick="closePopUp()">&times;</span>
+            Reason:
+            <select id="select_reason">
+                <option value="Reason 1">Reason 1</option>
+                <option value="Reason 2">Reason 2</option>
+                <option value="Reason 3">Reason 3</option>
+                <option value="Reason 4"> Reason 4</option>
+            </select>
+            <button onclick="confirmReason()">OK</button>
+        </div>
+    </div>
 
 </div>
 <script>
@@ -128,22 +142,35 @@
 
     });
 
-    function deletePost(obj) {
-        var reason = popUpBox();
-        if (reason) {
-            angular.element(document.getElementById("angular_app")).scope().delPost(obj.className, obj.id, reason);
-        }
+    var select_box = document.getElementById("pop-up");
+    {#    place holder #}
+    var class_name = null;
+    var id = null;
+    var decision = null;
+
+    function openPopUp(obj, string) {
+        select_box.style.display = "block";
+        class_name = obj.className;
+        id = obj.id;
+        decision = string;
     }
 
-    function banUser(obj) {
-        var reason = popUpBox();
-        if (reason) {
-            angular.element(document.getElementById("angular_app")).scope().banUser(obj.className, obj.id, reason);
-        }
+    function closePopUp() {
+        select_box.style.display = 'none';
     }
 
-    function popUpBox() {
-        return prompt("Enter reason:", "");
+    function confirmReason() {
+        var e = document.getElementById("select_reason");
+        var reason = e.options[e.selectedIndex].value;
+        if (reason) {
+            if (decision == 'ban') {
+                angular.element(document.getElementById("angular_app")).scope().banUser(class_name, id, reason);
+            }
+            else {
+                angular.element(document.getElementById("angular_app")).scope().delPost(class_name, id, reason);
+            }
+        }
+        closePopUp();
     }
 
 </script>
