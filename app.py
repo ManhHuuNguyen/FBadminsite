@@ -130,9 +130,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    session["current_user"] = "643833832487975"
-    session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
-    session['superstatus'] = "T"
+    # session["current_user"] = "643833832487975"
+    # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    # session['superstatus'] = "T"
     # test
     return render_template("main.html")
 
