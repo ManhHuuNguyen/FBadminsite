@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "special_token"
+special_token = "EAACEdEose0cBAMceS5PcWdvsDjT8UkXXQHZAsKmpoZBpx6iSzsZBw5S8K8dmvHYYbVuWrCRqdQhg1ceqSzS5MNpG7SztZBJGTqBwfBhmMdILmn1ZCZBoHieD21Pz8nGHV6qhqxXNFcUWTDdCxgGoVX9ZB5cH0dspY9qultRQZCoGUF3itrCpufoj13H0weRBSucZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -70,9 +70,10 @@ def return_data():
             # delete in db
             post_collection.delete_one(post_to_delete)
             # delete on fb
-            real_post_id = group_id + "_" + post_id
-            r = requests.delete("https://graph.facebook.com/DELETE/v2.9/{}".format(real_post_id),
-                                params={'access_token': special_token})
+            real_post_id = post_to_delete["parent_id"] + "_" + post_id
+            print(real_post_id)
+            r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                format(real_post_id, special_token))
             # update admin's number
             admin_collection.update({"_id": session["current_user"]}, {"$inc": {'post_deleted': 1}})
 
@@ -129,9 +130,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    # session["current_user"] = "643833832487975"
-    # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
-    # session['superstatus'] = "T"
+    session["current_user"] = "643833832487975"
+    session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    session['superstatus'] = "T"
     # test
     return render_template("main.html")
 
