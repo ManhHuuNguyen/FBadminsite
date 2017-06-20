@@ -107,7 +107,9 @@ def login():
 
 @app.route('/ban_list')
 def banlist():
-    return render_template("ban_list.html")
+    if "current_user" in session:
+        return render_template("ban_list.html")
+    return render_template("bad_request.html")
 
 
 @app.route("/return_banlist")
@@ -117,7 +119,9 @@ def return_banlist():
 
 @app.route("/history")
 def history_page():
-    return render_template("history.html")
+    if "current_user" in session:
+        return render_template("history.html")
+    return render_template("bad_request.html")
 
 
 @app.route("/return_history")
@@ -129,12 +133,15 @@ def return_history():
 
 @app.route("/main")
 def mainpage():
+    if "current_user" in session:
     # test
     # session["current_user"] = "643833832487975"
     # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
     # session['superstatus'] = "T"
     # test
-    return render_template("main.html")
+        print(session["current_user"])
+        return render_template("main.html")
+    return render_template("bad_request.html")
 
 
 @app.route("/logout")
