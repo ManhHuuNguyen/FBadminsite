@@ -18,7 +18,7 @@ computer_id = "1010101010101"
 group_id = "1576746889024748"
 app_id = "777625919075124"
 app_secret = "b9e7ab1c9eabeac21596486e39956faf"
-special_token = "EAACEdEose0cBANg0If2ocjG0laekBbSg8wEP230FZCF4dagT5rOhEb9T8s51UtXjZCrwdxToZCYCxZAtLwtiZAmwLm2cg1vKWnTOZCZBAvLtpRZBRtZCqdwadZBeDjh85Ihc0SeYWriyO2ZCZB5i4gcv1rgGdjGEJjScSnC879dHz9WBAZCZAeUHMLncXCBwUTEagkIssZD"
+special_token = "EAACEdEose0cBAC9RD7FKWaqxO4JBcmQ3KoqxhZBQ6e2UmYkYyliZCZB2akOZC0OFJKvKK4TJosExbXrZBX3G9WU3JItZBAMh9B7yDCyACOdI2Y0AcrpI3PZBoBS4ubPlPtz8pH78WG1JzSos1ZBquQgL77PDBO0ZC04tKFx7KGDsJdFLKMiiX9yYGvxlPwEAu1YsZD"
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
@@ -77,11 +77,12 @@ for post in post_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": post["from"]["id"]})
         if banned:
-            history.insert_one({"type": "USER BAN",
+            history.insert_one({"type": "POST DELETION",
                                 "admin_id": computer_id,
                                 "reason": "author already banned",
                                 "author": post["from"]["name"],
-                                "author_id": post["from"]["id"]})
+                                "author_id": post["from"]["id"],
+                                "content": post["message"]})
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(post["id"], special_token))
         else:
@@ -99,11 +100,12 @@ for comment in cmt_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": comment["from"]["id"]})
         if banned:
-            history.insert_one({"type": "USER BAN",
+            history.insert_one({"type": "POST DELETION",
                                 "admin_id": computer_id,
                                 "reason": "author already banned",
                                 "author": comment["from"]["name"],
-                                "author_id": comment["from"]["id"]})
+                                "author_id": comment["from"]["id"],
+                                "content": comment["message"]})
             real_post_id = comment["parent_id"] + "_" + comment["id"]
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
