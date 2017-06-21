@@ -56,14 +56,16 @@
 
     <div id="pop-up">
         <div class="popup-content">
-            <span class="close" onclick="closePopUp()">&times;</span>
+            <span class="close" onclick="closePopUp()"></span>
             Reason:
-            <select id="select_reason">
+            <select id="select_reason" onchange="selectionChange();">
                 <option value="Reason 1">Reason 1: blablablabla</option>
                 <option value="Reason 2">Reason 2: bleblebleble</option>
                 <option value="Reason 3">Reason 3: Avardavardavard</option>
                 <option value="Reason 4"> Reason 4: Thithethithe</option>
             </select>
+            <input id="custom_reason" placeholder="Reason" required="required"
+                   autofocus="autofocus"/>
             <button onclick="confirmReason()">OK</button>
         </div>
     </div>
@@ -163,8 +165,7 @@
     }
 
     function confirmReason() {
-        var e = document.getElementById("select_reason");
-        var reason = e.options[e.selectedIndex].value;
+        var reason = document.getElementById("custom_reason").value;
         if (reason) {
             if (decision == 'ban') {
                 angular.element(document.getElementById("angular_app")).scope().banUser(class_name, id, reason);
@@ -174,6 +175,13 @@
             }
         }
         closePopUp();
+    }
+
+    function selectionchange() {
+        var e = document.getElementById("select_reason");
+        var str = e.options[e.selectedIndex].value;
+
+        document.getElementById('custom_reason').value = str;
     }
 
 </script>
