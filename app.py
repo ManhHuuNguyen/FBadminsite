@@ -155,7 +155,7 @@ def facebook_authorized(resp):
     me = facebook.get('/me?fields=id,name,picture,groups')
     # check with db
     result = admin_collection.find_one({"_id": me.data['id']})
-    if group_id in [a for a in me.data["groups"].data["id"]]:
+    if group_id in [a for a in me["groups"].data["id"]]:
         session['image'] = me.data['picture']['data']['url']
         session["current_user"] = me.data['id']
         if me.data['id'] in superadmin_list:
