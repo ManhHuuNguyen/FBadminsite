@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+# to be run by cron
 from facepy import GraphAPI
 import time
 import pymongo
@@ -9,18 +11,20 @@ db = connection["adminsitedb"]
 db.authenticate("admin", "admin")
 post_collection = db['posts']
 banned_collection = db['the_condemned']
+history = db['history']
+timestamp = db["timestamp"]
+computer_id = "1010101010101"
 
 group_id = "1576746889024748"
 app_id = "777625919075124"
 app_secret = "b9e7ab1c9eabeac21596486e39956faf"
-special_token = "EAACEdEose0cBAOZAurlnZCKZB6FXXMQ2t8lxPmkRQbfixJQXEebT8ZBZCtlmQptLEvzZAIfdRZBSdhRKoQgnBOeNYDJUHcq6ZCREQpBBZBZABCxhQmf12TMXEyFl9B34Cib7aRCJZAt5mcMPrmrPfsFu07tqlXLGyQ6kIZCWkUDlljHbB7DcZASuPuGjP9RGIWUpCBOgZD"
+special_token = "EAACEdEose0cBABAP1EriTPG11F4ymDVb2MpxpcZBxS3bnPCWHOMtKl4eHX4XUzR5UCChH22uGXZB91ZAMjpbZBlAZA4iKAlWhcidPHF5NOMj1xnSYzZBFC41gM2BLgZAoo48P4t3qZAfwO3K0twppiGtYZACvOP4YkoCc3bPi0TiPW5ZBJBmgpPjXXnFCPTSoFDVV1kadcOMHw7QZDZD"
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
 
-f = open("/home/manh/Desktop/time.txt", "r")
-last_time = f.readline().strip("\n")
-f.close()
+time_doc = timestamp.find_one({"_id": "123456789"})
+last_time = time_doc["last_time"]
 
 
 def get_comments(_id, list_of_comments):
@@ -65,9 +69,7 @@ def crawl_the_group():
 
 post_list, cmt_list = crawl_the_group()
 end_time = str(int(time.time()))
-f = open("/home/manh/Desktop/time.txt", "w")
-f.write(end_time)
-f.close()
+timestamp.update(time_doc, {"$set": end_time})
 
 
 for post in post_list:
@@ -75,6 +77,11 @@ for post in post_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": post["from"]["id"]})
         if banned:
+            history.insert_one({"type": "USER BAN",
+                                "admin_id": computer_id,
+                                "reason": "author already banned",
+                                "author": post["from"]["name"],
+                                "author_id": post["from"]["id"]})
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(post["id"], special_token))
         else:
@@ -92,6 +99,11 @@ for comment in cmt_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": comment["from"]["id"]})
         if banned:
+            history.insert_one({"type": "USER BAN",
+                                "admin_id": computer_id,
+                                "reason": "author already banned",
+                                "author": comment["from"]["name"],
+                                "author_id": comment["from"]["id"]})
             real_post_id = comment["parent_id"] + "_" + comment["id"]
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
