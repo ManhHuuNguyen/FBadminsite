@@ -69,7 +69,7 @@ def crawl_the_group():
 
 post_list, cmt_list = crawl_the_group()
 end_time = str(int(time.time()))
-timestamp.update(time_doc, {"$set": end_time})
+timestamp.update(time_doc, {"$set": {"last_time": end_time}})
 
 
 for post in post_list:
