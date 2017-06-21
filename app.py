@@ -75,8 +75,6 @@ def return_data():
             print(real_post_id)
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
-            # update admin's number
-            admin_collection.update({"_id": session["current_user"]}, {"$inc": {'post_deleted': 1}})
 
         elif type == 'user_ban':
             # add to history
@@ -91,8 +89,6 @@ def return_data():
             # delete in db
             post_collection.delete_many({"author_id": author_id})
             # delete on facebook
-            # update admin's number
-            admin_collection.update({"_id": session["current_user"]}, {"$inc": {'user_banned': 1}})
 
         elif type == "unban":
             user_id = json_post.get("id")
@@ -183,7 +179,10 @@ def return_admin_info():
 
 @app.route("/return_admins")
 def return_admins():
-    return dumps([admin for admin in admin_collection.find({})])
+    return dumps([(admin["name"],
+                   len(list((history.find({"admin_id": admin["_id"], "type": "POST DELETION"})))),
+                   len(list(history.find({"admin_id": admin["_id"], "type": "USER BAN"}))))
+                  for admin in admin_collection.find({})])
 
 if __name__ == '__main__':
     app.run()

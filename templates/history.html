@@ -33,9 +33,9 @@
                 <th>User banned</th>
             </tr>
             <tr id='posts' ng-repeat="admin in admins">
-                <td>a{ admin.name }a</td>
-                <td> a{ admin.post_deleted }a</td>
-                <td> a{ admin.user_banned }a</td>
+                <td>a{ admin[0] }a</td>
+                <td> a{ admin[1] }a</td>
+                <td> a{ admin[2] }a</td>
             </tr>
         </table>
     </div>
