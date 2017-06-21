@@ -81,7 +81,7 @@ ul#nav_bar li a:hover {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 30%; /* Could be more or less, depending on screen size */
+    width: 28%; /* Could be more or less, depending on screen size */
     height: 15%;
 }
 
@@ -110,7 +110,7 @@ ul#nav_bar li a:hover {
     float: right;
     width: 15%;
     height: 15%;
-    margin-right: 50px;
+    margin-right: 75px;
 }
 
 #select_reason{
