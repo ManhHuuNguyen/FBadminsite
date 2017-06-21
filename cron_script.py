@@ -49,10 +49,7 @@ def get_comments(_id, list_of_comments):
 def crawl_the_group():
     list_of_posts = []
     list_of_comments = []
-    list_of_users = []
-    users = graph.get(group_id + "/members".format(last_time), page=True, retry=3, limit=10000)
-    for user in users:
-        list_of_users += user['data']
+
     pages = graph.get(group_id + "/feed?limit=50&time_format=U&fields=created_time,message,id,from&&since=" + last_time,
                       page=True, retry=3,
                       limit=1000)
@@ -64,17 +61,15 @@ def crawl_the_group():
             for post in post_content:
                 post_id = post['id']
                 get_comments(post_id, list_of_comments)
-    return list_of_posts, list_of_comments, list_of_users
+    return list_of_posts, list_of_comments
 
 
-post_list, cmt_list, user_list = crawl_the_group()
+post_list, cmt_list = crawl_the_group()
 end_time = str(int(time.time()))
 f = open("/home/manh/Desktop/time.txt", "w")
 f.write(end_time)
 f.close()
 
-for user in user_list:
-    user_collection.update({"_id": user["id"]}, {"$set": {"name": user["name"]}}, upsert=True)
 
 for post in post_list:
     try:

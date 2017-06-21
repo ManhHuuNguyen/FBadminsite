@@ -175,8 +175,10 @@ def authentication_page():
 
 @app.route('/return_admin_info')
 def return_admin_info():
-    result = admin_collection.find_one({"_id": session["current_user"]})
-    return dumps([result['name'], session['image'], result['post_deleted'], result['user_banned'], result['superstatus']])
+    name = admin_collection.find_one({"_id": session["current_user"]})
+    post_deleted = history.find({"admin_id": session["current_user"], "type": "POST DELETION"})
+    user_banned = history.find({"admin_id": session["current_user"], "type": "USER BAN"})
+    return dumps([name, session['image'], post_deleted, user_banned, session['superstatus']])
 
 
 @app.route("/return_admins")
