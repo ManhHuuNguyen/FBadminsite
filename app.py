@@ -108,9 +108,7 @@ def login():
 
 @app.route('/ban_list')
 def banlist():
-    if "current_user" in session:
-        return render_template("ban_list.html")
-    return render_template("bad_request.html")
+    return render_template("ban_list.html")
 
 
 @app.route("/return_banlist")
@@ -120,9 +118,7 @@ def return_banlist():
 
 @app.route("/history")
 def history_page():
-    if "current_user" in session:
-        return render_template("history.html")
-    return render_template("bad_request.html")
+    return render_template("history.html")
 
 
 @app.route("/return_history")
@@ -134,14 +130,12 @@ def return_history():
 
 @app.route("/main")
 def mainpage():
-    if "current_user" in session:
     # test
-    # session["current_user"] = "643833832487975"
-    # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
-    # session['superstatus'] = "T"
+    session["current_user"] = "643833832487975"
+    session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    session['superstatus'] = "T"
     # test
-        return render_template("main.html")
-    return render_template("bad_request.html")
+    return render_template("main.html")
 
 
 @app.route("/logout")
@@ -158,14 +152,16 @@ def facebook_authorized(resp):
     if resp is None:
         return 'Access denied: reason=%s error=%s' % (request.args['error_reason'], request.args['error_description'])
     session['oauth_token'] = (resp['access_token'], '')
-    me = facebook.get('/me?fields=id,name,picture')
-    print(me["administrator"])
+    me = facebook.get('/me?fields=id,name,picture,groups')
     # check with db
     result = admin_collection.find_one({"_id": me.data['id']})
-    if result:
+    if group_id in [a for a in me.data["groups"].data["id"]]:
         session['image'] = me.data['picture']['data']['url']
         session["current_user"] = me.data['id']
-        session['superstatus'] = result['superstatus']
+        if me.data['id'] in superadmin_list:
+            session['superstatus'] = "T"
+        else:
+            session["superstatus"] = "F"
         return redirect(url_for('mainpage'))
     return "Well well well... What do we have here? A burglar, or a thief? I know who you are user {}".format(me.data['id'])
 

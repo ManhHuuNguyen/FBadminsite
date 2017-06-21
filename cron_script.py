@@ -70,14 +70,14 @@ def crawl_the_group():
 post_list, cmt_list, user_list = crawl_the_group()
 end_time = str(int(time.time()))
 f = open("/home/manh/Desktop/time.txt", "w")
-f.write(end_time)
+# f.write(end_time)
 f.close()
 
 for user in user_list:
+    print(user)
     user_collection.update({"_id": user["id"]}, {"$set": {"name": user["name"]}}, upsert=True)
 
 for post in post_list:
-    print(post["id"].split("_")[1], "1576746889024748", post["message"])
     try:
         # check for banned user
         banned = banned_collection.find_one({"_id": post["from"]["id"]})
