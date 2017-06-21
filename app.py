@@ -154,7 +154,7 @@ def facebook_authorized(resp):
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me?fields=id,name,picture,groups')
     # check with db
-    if group_id in [group["id"] for group in me["groups"]["data"]]:
+    if group_id in [group["id"] for group in me["groups"]]:
         session['image'] = me.data['picture']['data']['url']
         session["current_user"] = me.data['id']
         if me.data['id'] in superadmin_list:
