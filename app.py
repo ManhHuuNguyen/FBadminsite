@@ -72,23 +72,26 @@ def return_data():
             post_collection.delete_one(post_to_delete)
             # delete on fb
             real_post_id = post_to_delete["parent_id"] + "_" + post_id
-            print(real_post_id)
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
 
         elif type == 'user_ban':
             # add to history
-            author_id = json_post.get('id')
+            post_id = json_post.get('id')
             admin_id = session["current_user"]
             reason = json_post.get('reason')
-            author = user_collection.find_one({"_id": author_id})
-            author_name = author["name"]
+            post = post_collection.find_one({"_id": post_id})
+            author_name = post["author"]
+            author_id = post['author_id']
             history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
             # add to list of the condemned
-            banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author["name"]})
+            banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name})
             # delete in db
             post_collection.delete_many({"author_id": author_id})
             # delete on facebook
+            real_post_id = post["parent_id"] + "_" + post_id
+            r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                format(real_post_id, special_token))
 
         elif type == "unban":
             user_id = json_post.get("id")

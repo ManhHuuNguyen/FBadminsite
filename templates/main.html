@@ -45,7 +45,7 @@
         </tr>
         <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
             <td>a{ post.author }a
-                <button id="a{ post.author_id }a" class="a{ $index }a" onclick="openPopUp(this, 'ban')"> Ban</button>
+                <button id="a{ post._id }a" class="a{ $index }a" onclick="openPopUp(this, 'ban')"> Ban</button>
                 <button id="a{ $index }a" class='a{ post._id }a' onclick="openPopUp(this, 'delete')"> Delete</button>
             </td>
             <td> a{ post._id }a</td>
@@ -130,8 +130,9 @@
         };
 
         $scope.banUser = function (class_name, id, reason) {
+            var banned_id = $scope.suspicious_posts[class_name].author_id;
             $scope.suspicious_posts = $scope.suspicious_posts.filter(function (a_post) {
-                return a_post.author_id != id;
+                return a_post.author_id != banned_id;
             });
             $scope.user_num = parseInt($scope.user_num) + 1;
             var dataObj = JSON.stringify({type: 'user_ban', id: id, reason: reason});
@@ -141,7 +142,6 @@
                 data: dataObj
             }).then(function successCallback(response) {
                 console.log(" post success!");
-                window.alert(reason); 
             }, function errorCallback(response) {
                 console.log("Error");
             });
