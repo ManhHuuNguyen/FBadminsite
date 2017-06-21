@@ -109,5 +109,9 @@ ul#nav_bar li a:hover {
 #cf_reason{
     float: right;
     width: 15%;
-    height: 10%;
+    height: 15%;
+}
+
+#select_reason{
+    margin-left: 12px;
 }

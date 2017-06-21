@@ -31,11 +31,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="71" column="14" lean-forward="true" selection-start-line="71" selection-start-column="14" selection-end-line="71" selection-end-column="14" />
+            <state relative-caret-position="220">
+              <caret line="58" column="69" lean-forward="false" selection-start-line="58" selection-start-column="69" selection-end-line="58" selection-end-column="69" />
               <folding>
                 <element signature="e#2049#2056#1#HTML" expanded="true" />
               </folding>
@@ -43,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="98" column="26" lean-forward="true" selection-start-line="98" selection-start-column="26" selection-end-line="98" selection-end-column="26" />
+            <state relative-caret-position="539">
+              <caret line="116" column="1" lean-forward="true" selection-start-line="116" selection-start-column="1" selection-end-line="116" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -68,7 +68,7 @@
       <file leaf-file-name="ban_list.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/ban_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
+            <state relative-caret-position="-1193">
               <caret line="28" column="61" lean-forward="false" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
               <folding />
             </state>
@@ -78,7 +78,7 @@
       <file leaf-file-name="cron_script.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cron_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1625">
+            <state relative-caret-position="-965">
               <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
                 <element signature="e#23#50#0" expanded="true" />
@@ -926,9 +926,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cron_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-965">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ban_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
+        <state relative-caret-position="-1193">
           <caret line="28" column="61" lean-forward="false" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
           <folding />
         </state>
@@ -944,31 +954,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cron_script.py">
+    <entry file="file://$PROJECT_DIR$/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1625">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="220">
+          <caret line="58" column="69" lean-forward="false" selection-start-line="58" selection-start-column="69" selection-end-line="58" selection-end-column="69" />
           <folding>
-            <element signature="e#23#50#0" expanded="true" />
+            <element signature="e#2049#2056#1#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="98" column="26" lean-forward="true" selection-start-line="98" selection-start-column="26" selection-end-line="98" selection-end-column="26" />
+        <state relative-caret-position="539">
+          <caret line="116" column="1" lean-forward="true" selection-start-line="116" selection-start-column="1" selection-end-line="116" selection-end-column="1" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="71" column="14" lean-forward="true" selection-start-line="71" selection-start-column="14" selection-end-line="71" selection-end-column="14" />
-          <folding>
-            <element signature="e#2049#2056#1#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
