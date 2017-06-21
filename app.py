@@ -17,6 +17,7 @@ special_token = "EAACEdEose0cBANWZAVUi5u48QZA29GatILHpcZBLC3ccbmUscpuUCe2JoZC7dF
 connection = pymongo.MongoClient(config.host, config.port)
 db = connection["adminsitedb"]
 db.authenticate(config.db_name, config.db_password)
+superadmin_list = ["627528440778188", "643833832487975"]
 
 post_collection = db['posts']
 user_collection = db['users']
@@ -139,7 +140,6 @@ def mainpage():
     # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
     # session['superstatus'] = "T"
     # test
-        print(session["current_user"])
         return render_template("main.html")
     return render_template("bad_request.html")
 
@@ -159,6 +159,7 @@ def facebook_authorized(resp):
         return 'Access denied: reason=%s error=%s' % (request.args['error_reason'], request.args['error_description'])
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me?fields=id,name,picture')
+    print(me["administrator"])
     # check with db
     result = admin_collection.find_one({"_id": me.data['id']})
     if result:
