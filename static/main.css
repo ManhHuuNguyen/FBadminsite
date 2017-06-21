@@ -99,3 +99,7 @@ ul#nav_bar li a:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+#custom_reason{
+    margin: 5px;
+}

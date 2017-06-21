@@ -13,7 +13,7 @@ banned_collection = db['the_condemned']
 group_id = "1576746889024748"
 app_id = "777625919075124"
 app_secret = "b9e7ab1c9eabeac21596486e39956faf"
-special_token = "EAACEdEose0cBAEGM2vi6Nz93OatzlPyFlyaiSWICozohZCmcb8fcXTAAHYu8giljC7fjNiVqZBLdZCL1LriSu2TlNsMJkPiWTWnINaC3Rtykb5NZAVAiYIQudt41bZC6g5fhTY1teA7oZA9P4vJgMHNd8mvc9UD9ZBZCsrz2IP2qQVkVEPwSeXGfbia8kIoj4NQZD"
+special_token = "EAACEdEose0cBAOZAurlnZCKZB6FXXMQ2t8lxPmkRQbfixJQXEebT8ZBZCtlmQptLEvzZAIfdRZBSdhRKoQgnBOeNYDJUHcq6ZCREQpBBZBZABCxhQmf12TMXEyFl9B34Cib7aRCJZAt5mcMPrmrPfsFu07tqlXLGyQ6kIZCWkUDlljHbB7DcZASuPuGjP9RGIWUpCBOgZD"
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
