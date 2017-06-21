@@ -8,7 +8,6 @@ connection = pymongo.MongoClient("ds111262.mlab.com", 11262)
 db = connection["adminsitedb"]
 db.authenticate("admin", "admin")
 post_collection = db['posts']
-user_collection = db['users']
 banned_collection = db['the_condemned']
 
 group_id = "1576746889024748"
