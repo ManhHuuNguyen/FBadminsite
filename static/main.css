@@ -101,7 +101,13 @@ ul#nav_bar li a:hover {
 }
 
 #custom_reason{
-    margin: 15px;
+    margin: 12px;
     width: 80%;
     height: 60%;
+}
+
+#cf_reason{
+    float: right;
+    width: 15%;
+    height: 10%;
 }
