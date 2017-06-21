@@ -103,7 +103,7 @@ ul#nav_bar li a:hover {
 #custom_reason{
     margin: 12px;
     width: 80%;
-    height: 60%;
+    height: 55%;
 }
 
 #cf_reason{
@@ -114,4 +114,5 @@ ul#nav_bar li a:hover {
 
 #select_reason{
     margin-left: 12px;
+    width:80%;
 }
