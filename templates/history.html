@@ -66,6 +66,14 @@
             <th>Author</th>
             <th>Reason</th>
         </tr>
+        <tr>
+            <th><input type="text" ng-model="search.type"></th>
+            <th><input type="text" ng-model="search.type"></th>
+            <th><input type="text" ng-model="search.type"></th>
+            <th><input type="text" ng-model="search.type"></th>
+            <th><input type="text" ng-model="search.type"></th>
+            
+        </tr>
         <tr id='posts' ng-repeat="post in past_posts | filter: search">
             <td>a{ post.type }a</td>
             <td> a{ post.content }a</td>
