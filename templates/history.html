@@ -50,7 +50,7 @@
         <input type="text" ng-model="search.reason">
     </div>
 
-    <table style="width: 100%">
+    <table style="width: 100%" ng-table="historyTable">
         <colgroup>
             <col span="1" style="width: 10%;">
             <col span="1" style="width: 35%;">
@@ -77,13 +77,13 @@
 </div>
 <script>
 
-    var application = angular.module("history_page", []);
+    var application = angular.module("history_page", ['ngTable']);
 
     application.config(['$interpolateProvider', function ($interpolateProvider) {
         $interpolateProvider.startSymbol('a{');
         $interpolateProvider.endSymbol('}a');
     }]);
-    application.controller("myCtrl", function ($scope, $http) {
+    application.controller("myCtrl", function ($scope, $http,  ngTableParams) {
         $http({
             method: 'GET',
             url: '/return_history'
@@ -112,7 +112,18 @@
         }, function errorCallback(response) {
             console.log("Error");
         });
-
+{#        test#}
+        $scope.historyTable = new ngTableParams({
+                page: 1,
+                count: 10
+            }, {
+                total: $scope.past_posts.length,
+                getData: function ($defer, params) {
+                    $scope.data = $scope.past_posts.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    $defer.resolve($scope.data);
+                }
+            });
+{#         test#}
     });
 
 </script>
