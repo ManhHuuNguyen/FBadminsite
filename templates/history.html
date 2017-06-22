@@ -5,8 +5,7 @@
     <title>History</title>
     <link rel="stylesheet" href="../static/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
-    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+    
 </head>
 <body ng-app="history_page" ng-controller="myCtrl">
 
@@ -52,7 +51,7 @@
         <input type="text" ng-model="search.reason">
     </div>
 
-    <table style="width: 100%" ng-table="historyTable">
+    <table style="width: 100%">
         <colgroup>
             <col span="1" style="width: 10%;">
             <col span="1" style="width: 35%;">
@@ -79,7 +78,7 @@
 </div>
 <script>
 
-    var application = angular.module("history_page", ['ngTable']);
+    var application = angular.module("history_page", []);
 
     application.config(['$interpolateProvider', function ($interpolateProvider) {
         $interpolateProvider.startSymbol('a{');
@@ -114,18 +113,6 @@
         }, function errorCallback(response) {
             console.log("Error");
         });
-{#        test#}
-        $scope.historyTable = new ngTableParams({
-                page: 1,
-                count: 10
-            }, {
-                total: $scope.past_posts.length,
-                getData: function ($defer, params) {
-                    $scope.data = $scope.past_posts.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                    $defer.resolve($scope.data);
-                }
-            });
-{#         test#}
     });
 
 </script>
