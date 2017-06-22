@@ -14,10 +14,6 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-#searchBoxes {
-    padding: 10px;
-}
-
 #right_column {
     padding: 10px;
     float: right;
