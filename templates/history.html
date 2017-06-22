@@ -84,7 +84,7 @@
         $interpolateProvider.startSymbol('a{');
         $interpolateProvider.endSymbol('}a');
     }]);
-    application.controller("myCtrl", function ($scope, $http,  ngTableParams) {
+    application.controller("myCtrl", function ($scope, $http) {
         $http({
             method: 'GET',
             url: '/return_history'
