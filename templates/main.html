@@ -43,6 +43,12 @@
             <th>Time</th>
             <th>Content</th>
         </tr>
+        <tr>
+            <th><input type="text" ng-model="search.author"></th>
+            <th><input type="text" ng-model="search._id"></th>
+            <th><input type="text" ng-model="search.time"></th>
+            <th><input type="text" ng-model="search.content"></th>
+        </tr>
         <tr id='posts' ng-repeat="post in suspicious_posts | filter: search">
             <td>a{ post.author }a
                 <button id="a{ post._id }a" class="a{ $index }a" onclick="openPopUp(this, 'ban')"> Ban</button>

@@ -68,11 +68,10 @@
         </tr>
         <tr>
             <th><input type="text" ng-model="search.type"></th>
-            <th><input type="text" ng-model="search.type"></th>
-            <th><input type="text" ng-model="search.type"></th>
-            <th><input type="text" ng-model="search.type"></th>
-            <th><input type="text" ng-model="search.type"></th>
-            
+            <th><input type="text" ng-model="search.content"></th>
+            <th><input type="text" ng-model="search.author_id"></th>
+            <th><input type="text" ng-model="search.author"></th>
+            <th><input type="text" ng-model="search.reason"></th>
         </tr>
         <tr id='posts' ng-repeat="post in past_posts | filter: search">
             <td>a{ post.type }a</td>
