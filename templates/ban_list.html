@@ -22,13 +22,7 @@
     </nav>
 </div>
 <div id="right_column">
-
-    <div id="searchBoxes">
-        <input type="text" ng-model="search.name">
-        <input type="text" ng-model="search._id">
-        <input type="text" ng-model="search.createdAt.$date">
-    </div>
-
+    
     <table style="width: 100%">
         <colgroup>
             <col span="1" style="width: 35%;">
@@ -39,6 +33,11 @@
             <th>User</th>
             <th>ID</th>
             <th>Time</th>
+        </tr>
+        <tr>
+            <th><input type="text" ng-model="search.name"></th>
+            <th><input type="text" ng-model="search._id"></th>
+            <th><input type="text" ng-model="search.createdAt.$date"></th>
         </tr>
         <tr id='posts' ng-repeat="user in banned_users | filter: search">
             <td>a{ user.name }a
