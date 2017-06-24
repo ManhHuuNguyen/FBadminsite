@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBAMR5F9olrUJ3R1nLrp3N8tis63lnsoGaF4VpiHmQ8mgDdnEE9lcULuLsfcTMWZBpOfIM4zZArLIZAGKiSWpA0ZBKEpyZCAClJRIZBHI5SXEerQpQBbx9ZCEpGvY9hzuDEivsBr90UZCBRsiCRSWwjMXB3LH3kvFNnOJ0omp8zweRpggIdcNL4ZCcZD"
+special_token = "EAACEdEose0cBAJOzN31dMqhRf1kJLQZAgwT456ZBy3Pqiqp30XbovX3ctnMbYuwAQSCJDNmub7btX6pZB83MEoaBl1dKGmeNxNSLXfRQU7vxZBzQjXKRsoZAVoZC2M3SA3tvTIoCMrZAzenelHonxV0UeLqfKQhZCKEG9wKSmNwZB3hg4yzcLmgxni9Q0YvDaUwsZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -77,6 +77,7 @@ def return_data():
 
         elif type == 'user_ban':
             # add to history
+            time_ban = json_post.get('timeBan')
             post_id = json_post.get('id')
             admin_id = session["current_user"]
             reason = json_post.get('reason')
@@ -86,12 +87,19 @@ def return_data():
             history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
             # add to list of the condemned
             banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name})
+            # delete on facebook
+            if time_ban == '1':
+                real_post_id = post["parent_id"] + "_" + post_id
+                r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                format(real_post_id, special_token))
+
+            else:
+                ids = [(post["parent_id"] + "_" + post["_id"]) for post in post_collection.find({"author_id": author_id})]
+                for each_id in ids:
+                    r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                        format(each_id, special_token))
             # delete in db
             post_collection.delete_many({"author_id": author_id})
-            # delete on facebook
-            real_post_id = post["parent_id"] + "_" + post_id
-            r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
-                                format(real_post_id, special_token))
 
         elif type == "unban":
             user_id = json_post.get("id")

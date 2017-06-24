@@ -62,6 +62,14 @@
                 <option value="Reason 3: Avardavardavard">Reason 3: Avardavardavard</option>
                 <option value="Reason 4: Thithethithe"> Reason 4: Thithethithe</option>
             </select>
+
+            <br>
+
+            <select id="timeBan" ng-if="decision=='ban'">
+                <option value="1"> Mercy, my lord</option>
+                <option value="0"> Nuclear Option</option>
+            </select>
+
             <br>
             <textarea id="custom_reason" placeholder="Reason" required="required"
                       autofocus="autofocus">Reason 1</textarea>
@@ -128,13 +136,13 @@
             });
         };
 
-        $scope.banUser = function (class_name, id, reason) {
+        $scope.banUser = function (class_name, id, reason, timeBan) {
             var banned_id = $scope.suspicious_posts[class_name].author_id;
             $scope.suspicious_posts = $scope.suspicious_posts.filter(function (a_post) {
                 return a_post.author_id != banned_id;
             });
             $scope.user_num = parseInt($scope.user_num) + 1;
-            var dataObj = JSON.stringify({type: 'user_ban', id: id, reason: reason});
+            var dataObj = JSON.stringify({type: 'user_ban', id: id, reason: reason, timeBan: timeBan});
             $http({
                 method: 'POST',
                 url: '/return_data',
@@ -169,7 +177,9 @@
         var reason = document.getElementById("custom_reason").value;
         if (reason) {
             if (decision == 'ban') {
-                angular.element(document.getElementById("angular_app")).scope().banUser(class_name, id, reason);
+                var e = document.getElementById("timeBan");
+                var timeBan = e.options[e.selectedIndex].value;
+                angular.element(document.getElementById("angular_app")).scope().banUser(class_name, id, reason, timeBan);
             }
             else {
                 angular.element(document.getElementById("angular_app")).scope().delPost(class_name, id, reason);
