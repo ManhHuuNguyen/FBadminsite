@@ -62,14 +62,11 @@
                 <option value="Reason 3: Avardavardavard">Reason 3: Avardavardavard</option>
                 <option value="Reason 4: Thithethithe"> Reason 4: Thithethithe</option>
             </select>
-
             <br>
-            <div ng-if="decision=='ban'">
-                <select id="timeBan">
-                    <option value="1"> Mercy, my lord</option>
-                    <option value="0"> Nuclear Option</option>
-                </select>
-            </div>
+            <select id="timeBan" style="visibility:hidden">
+                <option value="1"> Mercy, my lord</option>
+                <option value="0"> Nuclear Option</option>
+            </select>
             <br>
             <textarea id="custom_reason" placeholder="Reason" required="required"
                       autofocus="autofocus">Reason 1</textarea>
@@ -167,6 +164,9 @@
         class_name = obj.className;
         id = obj.id;
         decision = string;
+        if (decision=='ban'){
+            document.getElementById("timeBan").style.visibility="visible";
+        }
     }
 
     function closePopUp() {
