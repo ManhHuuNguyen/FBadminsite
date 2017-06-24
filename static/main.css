@@ -78,7 +78,7 @@ ul#nav_bar li a:hover {
     padding: 20px;
     border: 1px solid #888;
     width: 28%; /* Could be more or less, depending on screen size */
-    height: 18%;
+    height: 20%;
 }
 
 /* The Close Button */
