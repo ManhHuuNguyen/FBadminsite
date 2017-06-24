@@ -64,12 +64,12 @@
             </select>
 
             <br>
-
-            <select id="timeBan" ng-if="decision=='ban'">
-                <option value="1"> Mercy, my lord</option>
-                <option value="0"> Nuclear Option</option>
-            </select>
-
+            <div ng-if="decision=='ban'">
+                <select id="timeBan">
+                    <option value="1"> Mercy, my lord</option>
+                    <option value="0"> Nuclear Option</option>
+                </select>
+            </div>
             <br>
             <textarea id="custom_reason" placeholder="Reason" required="required"
                       autofocus="autofocus">Reason 1</textarea>
