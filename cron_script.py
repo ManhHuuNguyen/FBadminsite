@@ -27,8 +27,7 @@ graph = GraphAPI(access_token)
 time_doc = timestamp.find_one({"_id": "123456789"})
 last_time = time_doc["last_time"]
 
-
-bad_word_repertoire =["dm", "dcm", "fuck", "ong chu viettel", "vcl", "filter"]
+bad_word_repertoire = ["dm", "dcm", "fuck", "ong chu viettel", "vcl", "filter"]
 
 
 def content_filter(string):
@@ -79,7 +78,6 @@ post_list, cmt_list = crawl_the_group()
 end_time = str(int(time.time()))
 timestamp.update(time_doc, {"$set": {"last_time": end_time}})
 
-
 for post in post_list:
     try:
         # check for banned user
@@ -101,13 +99,13 @@ for post in post_list:
                                                  "author_id": post["from"]["id"],
                                                  "time": post["created_time"],
                                                  "parent_id": "1576746889024748"}}, upsert=True)
-            else:
-                allpost_collection.update({"_id": post["id"].split("_")[1]},
-                                          {"$set": {"content": post["message"],
-                                                    "author": post["from"]["name"],
-                                                    "author_id": post["from"]["id"],
-                                                    "time": post["created_time"],
-                                                    "parent_id": "1576746889024748"}}, upsert=True)
+
+            allpost_collection.update({"_id": post["id"].split("_")[1]},
+                                      {"$set": {"content": post["message"],
+                                                "author": post["from"]["name"],
+                                                "author_id": post["from"]["id"],
+                                                "time": post["created_time"],
+                                                "parent_id": "1576746889024748"}}, upsert=True)
 
     except KeyError:
         pass
@@ -134,13 +132,13 @@ for comment in cmt_list:
                                                  "author_id": comment["from"]["id"],
                                                  "time": comment["created_time"],
                                                  "parent_id": comment["parent_id"]}}, upsert=True)
-            else:
-                allpost_collection.update({"_id": comment["id"]},
-                                          {"$set": {"content": comment["message"],
-                                                    "author": comment["from"]["name"],
-                                                    "author_id": comment["from"]["id"],
-                                                    "time": comment["created_time"],
-                                                    "parent_id": comment["parent_id"]}}, upsert=True)
+
+            allpost_collection.update({"_id": comment["id"]},
+                                      {"$set": {"content": comment["message"],
+                                                "author": comment["from"]["name"],
+                                                "author_id": comment["from"]["id"],
+                                                "time": comment["created_time"],
+                                                "parent_id": comment["parent_id"]}}, upsert=True)
 
     except KeyError:
         pass
