@@ -10,6 +10,7 @@ connection = pymongo.MongoClient("ds111262.mlab.com", 11262)
 db = connection["adminsitedb"]
 db.authenticate("admin", "admin")
 post_collection = db['posts']
+allpost_collection = db["all_posts"]
 banned_collection = db['the_condemned']
 history = db['history']
 timestamp = db["timestamp"]
@@ -25,6 +26,13 @@ graph = GraphAPI(access_token)
 
 time_doc = timestamp.find_one({"_id": "123456789"})
 last_time = time_doc["last_time"]
+
+
+bad_word_repertoire =["dm", "dcm", "fuck", "ong chu viettel", "vcl", "filter"]
+
+
+def content_filter(string):
+    return any([bad_word in string.lower() for bad_word in bad_word_repertoire])
 
 
 def get_comments(_id, list_of_comments):
@@ -86,12 +94,21 @@ for post in post_list:
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(post["id"], special_token))
         else:
-            post_collection.update({"_id": post["id"].split("_")[1]},
-                                   {"$set": {"content": post["message"],
-                                             "author": post["from"]["name"],
-                                             "author_id": post["from"]["id"],
-                                             "time": post["created_time"],
-                                             "parent_id": "1576746889024748"}}, upsert=True)
+            if content_filter(post["message"]):
+                post_collection.update({"_id": post["id"].split("_")[1]},
+                                       {"$set": {"content": post["message"],
+                                                 "author": post["from"]["name"],
+                                                 "author_id": post["from"]["id"],
+                                                 "time": post["created_time"],
+                                                 "parent_id": "1576746889024748"}}, upsert=True)
+            else:
+                allpost_collection.update({"_id": post["id"].split("_")[1]},
+                                          {"$set": {"content": post["message"],
+                                                    "author": post["from"]["name"],
+                                                    "author_id": post["from"]["id"],
+                                                    "time": post["created_time"],
+                                                    "parent_id": "1576746889024748"}}, upsert=True)
+
     except KeyError:
         pass
 
@@ -110,11 +127,20 @@ for comment in cmt_list:
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
         else:
-            post_collection.update({"_id": comment["id"]},
-                                   {"$set": {"content": comment["message"],
-                                             "author": comment["from"]["name"],
-                                             "author_id": comment["from"]["id"],
-                                             "time": comment["created_time"],
-                                             "parent_id": comment["parent_id"]}}, upsert=True)
+            if content_filter(comment["message"]):
+                post_collection.update({"_id": comment["id"]},
+                                       {"$set": {"content": comment["message"],
+                                                 "author": comment["from"]["name"],
+                                                 "author_id": comment["from"]["id"],
+                                                 "time": comment["created_time"],
+                                                 "parent_id": comment["parent_id"]}}, upsert=True)
+            else:
+                allpost_collection.update({"_id": comment["id"]},
+                                          {"$set": {"content": comment["message"],
+                                                    "author": comment["from"]["name"],
+                                                    "author_id": comment["from"]["id"],
+                                                    "time": comment["created_time"],
+                                                    "parent_id": comment["parent_id"]}}, upsert=True)
+
     except KeyError:
         pass
