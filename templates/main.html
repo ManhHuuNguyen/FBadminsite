@@ -164,13 +164,16 @@
         class_name = obj.className;
         id = obj.id;
         decision = string;
-        if (decision=='ban'){
-            document.getElementById("timeBan").style.visibility="visible";
+        if (decision == 'ban') {
+            document.getElementById("timeBan").style.visibility = "visible";
         }
     }
 
     function closePopUp() {
         select_box.style.display = 'none';
+        class_name = null;
+        id = null;
+        decision = null;
     }
 
     function confirmReason() {
