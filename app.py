@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBAJOzN31dMqhRf1kJLQZAgwT456ZBy3Pqiqp30XbovX3ctnMbYuwAQSCJDNmub7btX6pZB83MEoaBl1dKGmeNxNSLXfRQU7vxZBzQjXKRsoZAVoZC2M3SA3tvTIoCMrZAzenelHonxV0UeLqfKQhZCKEG9wKSmNwZB3hg4yzcLmgxni9Q0YvDaUwsZD"
+special_token = "EAACEdEose0cBAKKAfcAV9rKwLMO6TuLAjJGKuiZCvWOUUu1qXWKPK2KrGKDHnULclsehV1AD29EAPOZBIzxA5PZCUuiYhG0ZCRI4816GJ0O8gjpviqIFedSdXhG1HSUnk9Lcd2TeZBBlbGUNjIJuODkZBT05o87rojoffWVxOD7stiTEnptGgKEItV9yJyTf4ZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
