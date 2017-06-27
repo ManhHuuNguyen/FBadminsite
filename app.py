@@ -18,6 +18,7 @@ connection = pymongo.MongoClient(config.host, config.port)
 db = connection["adminsitedb"]
 db.authenticate(config.db_name, config.db_password)
 superadmin_list = ["627528440778188", "643833832487975"]
+computer_id = "1010101010101"
 
 post_collection = db['posts']
 user_collection = db['users']
@@ -61,7 +62,6 @@ def return_data():
         if type == 'post_deletion':
             # add to history
             post_id = json_post.get('id')
-            print(post_id)
             post_to_delete = post_collection.find_one({"_id": post_id})
             reason = json_post.get('reason')
             admin_id = session["current_user"]
@@ -85,20 +85,33 @@ def return_data():
             post = post_collection.find_one({"_id": post_id})
             author_name = post["author"]
             author_id = post['author_id']
+            content = post["content"]
             history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
-            # add to list of the condemned
             banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name})
-            # delete on facebook
+            # delete on facebook + delete that single post, credited to computer
             if time_ban == '1':
                 real_post_id = post["parent_id"] + "_" + post_id
+                history.insert_one({"type": "POST DELETION",
+                                    "admin_id": computer_id,
+                                    "reason": "author already banned",
+                                    "author": author_name,
+                                    "author_id": author_id,
+                                    "content": content})
                 r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
 
             else:
-                ids = [(post["parent_id"] + "_" + post["_id"]) for post in post_collection.find({"author_id": author_id})]
-                for each_id in ids:
+                # delete all posts that are in question (not every post literally), also credited to computer
+                id_and_content = [((post["parent_id"] + "_" + post["_id"]), post["content"]) for post in post_collection.find({"author_id": author_id})]
+                for each in id_and_content:
+                    history.insert_one({"type": "POST DELETION",
+                                        "admin_id": computer_id,
+                                        "reason": "author already banned",
+                                        "author": author_name,
+                                        "author_id": author_id,
+                                        "content": each[1]})
                     r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
-                                        format(each_id, special_token))
+                                        format(each[0], special_token))
             # delete in db
             post_collection.delete_many({"author_id": author_id})
 

@@ -83,6 +83,7 @@ for post in post_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": post["from"]["id"]})
         if banned:
+            # regardless of its status, delete and credit to computer
             history.insert_one({"type": "POST DELETION",
                                 "admin_id": computer_id,
                                 "reason": "author already banned",
@@ -92,6 +93,7 @@ for post in post_list:
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(post["id"], special_token))
         else:
+            # the smell test
             if content_filter(post["message"]):
                 post_collection.update({"_id": post["id"].split("_")[1]},
                                        {"$set": {"content": post["message"],
@@ -99,7 +101,7 @@ for post in post_list:
                                                  "author_id": post["from"]["id"],
                                                  "time": post["created_time"],
                                                  "parent_id": "1576746889024748"}}, upsert=True)
-
+            # pass smell test or not, add it to all post (not happens to banned user posts, which are automatically deleted)
             allpost_collection.update({"_id": post["id"].split("_")[1]},
                                       {"$set": {"content": post["message"],
                                                 "author": post["from"]["name"],
@@ -115,6 +117,7 @@ for comment in cmt_list:
         # check for banned user
         banned = banned_collection.find_one({"_id": comment["from"]["id"]})
         if banned:
+            # regardless of its status, delete and credit to computer
             history.insert_one({"type": "POST DELETION",
                                 "admin_id": computer_id,
                                 "reason": "author already banned",
@@ -125,6 +128,7 @@ for comment in cmt_list:
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
         else:
+            # the smell test
             if content_filter(comment["message"]):
                 post_collection.update({"_id": comment["id"]},
                                        {"$set": {"content": comment["message"],
@@ -132,7 +136,7 @@ for comment in cmt_list:
                                                  "author_id": comment["from"]["id"],
                                                  "time": comment["created_time"],
                                                  "parent_id": comment["parent_id"]}}, upsert=True)
-
+            # pass smell test or not, add it to all post (not happens to banned user posts, which are automatically deleted)
             allpost_collection.update({"_id": comment["id"]},
                                       {"$set": {"content": comment["message"],
                                                 "author": comment["from"]["name"],

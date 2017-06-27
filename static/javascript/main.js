@@ -23,15 +23,6 @@ application.controller("myCtrl", function ($scope, $http) {
         console.log("Error");
     });
 
-    $http({
-        method: 'GET',
-        url: '/return_admins'
-    }).then(function successCallback(response) {
-        $scope.admins = response.data;
-    }, function errorCallback(response) {
-        console.log("Error");
-    });
-
     setInterval(function () {
         $http({
             method: 'GET',
