@@ -109,6 +109,7 @@ application.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.confirmReason = function () {
+        window.alert("Hello");
         var reason = document.getElementById('comment_text').value;
         if (reason){
             if ($scope.decision=='ban'){
