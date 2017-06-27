@@ -91,6 +91,7 @@ application.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.openDialog = function (which, index_to_delete, post_id) {
+        window.alert(post_id); 
         $scope.delete_index = index_to_delete;
         $scope.post_id = post_id;
         $scope.decision = which;
