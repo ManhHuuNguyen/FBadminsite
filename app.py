@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBAKKAfcAV9rKwLMO6TuLAjJGKuiZCvWOUUu1qXWKPK2KrGKDHnULclsehV1AD29EAPOZBIzxA5PZCUuiYhG0ZCRI4816GJ0O8gjpviqIFedSdXhG1HSUnk9Lcd2TeZBBlbGUNjIJuODkZBT05o87rojoffWVxOD7stiTEnptGgKEItV9yJyTf4ZD"
+special_token = "EAACEdEose0cBAGqmCmEZBfsTQCX1XVmjnZB3CBvdTXnYOiVJePqNZBokw27BHKepU8uxOFjsg01SDzZBniA6f2jT89We6a17DwFIPOThRrXy3EgKZAyZBZCHzTvK1LjdjWW8y4KcdeLjxHhwZAuVpbep9uFHEn1OYxamG7QNihZAZB3USztqMGg5Cs723BTM6amKwZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -139,7 +139,7 @@ def return_history():
 def mainpage():
     # test
     # session["current_user"] = "643833832487975"
-    # session["image"] = "https://www.google.org/assets/static/images/logo_googledotorg-171e7482e5523603fc0eed236dd772d8.svg"
+    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
     # session['superstatus'] = "T"
     # test
     return render_template("main.html")
@@ -185,7 +185,7 @@ def return_admin_info():
     name = admin_collection.find_one({"_id": session["current_user"]})["name"]
     post_deleted = len(list((history.find({"admin_id": session["current_user"], "type": "POST DELETION"}))))
     user_banned = len(list(history.find({"admin_id": session["current_user"], "type": "USER BAN"})))
-    return dumps([name, session['image'], post_deleted, user_banned, session['superstatus']])
+    return dumps([name, session['image'], post_deleted, user_banned, session['superstatus'], session["current_user"]])
 
 
 @app.route("/return_admins")
