@@ -61,6 +61,7 @@ def return_data():
         if type == 'post_deletion':
             # add to history
             post_id = json_post.get('id')
+            print(post_id)
             post_to_delete = post_collection.find_one({"_id": post_id})
             reason = json_post.get('reason')
             admin_id = session["current_user"]
