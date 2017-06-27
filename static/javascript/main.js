@@ -109,7 +109,6 @@ application.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.confirmReason = function () {
-        window.alert("Hello");
         var reason = document.getElementById('comment_text').value;
         if (reason){
             if ($scope.decision=='ban'){
@@ -118,7 +117,7 @@ application.controller("myCtrl", function ($scope, $http) {
                 $scope.banUser($scope.delete_index, $scope.post_id, reason, timeBan);
             }
             else {
-                $scope.delPost($scope.delete_index, $scope.post_id, reason);
+                $scope.delPost($scope.post_id, $scope.delete_index, reason);
             }
         }
         $scope.closeDialog();
