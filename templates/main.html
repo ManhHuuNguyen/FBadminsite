@@ -19,9 +19,9 @@
 
 <header id="header">
     <hgroup>
-        <h1 class="site_title"><a href="/newmain">Website Admin</a></h1>
-        <h2 class="section_title">Dashboard</h2>
-        <div class="btn_view_site"><a href="https://www.facebook.com/groups/1576746889024748">View Site</a></div>
+        <h1 class="site_title">Website Admin</h1>
+        <h2 class="section_title"><a href="/main">Dashboard</a></h2>
+        <div class="btn_view_site"><a href="https://www.facebook.com/groups/1576746889024748">View Group</a></div>
     </hgroup>
 </header> <!-- end of header bar -->
 
@@ -33,11 +33,9 @@
     </div>
     <div class="breadcrumbs_container">
         <article class="breadcrumbs">
-            <a href="/newmain">Dashboard</a>
+            <a href="#">Website Admin</a>
             <div class="breadcrumb_divider"></div>
-            <a href="/history">History</a>
-            <div class="breadcrumb_divider"></div>
-            <a href="/ban_list">Banlist</a>
+            <a href="/main">Dashboard</a>
         </article>
     </div>
 </section><!-- end of secondary bar -->
@@ -48,30 +46,22 @@
                onfocus="if(!this._haschanged){this.value=''};this._haschanged=true;">
     </form>
     <hr/>
-    <h3>Content</h3>
-    <ul class="toggle">
-        <li class="icn_new_article"><a href="#">New Article</a></li>
-        <li class="icn_edit_article"><a href="#">Edit Articles</a></li>
-        <li class="icn_categories"><a href="#">Categories</a></li>
-        <li class="icn_tags"><a href="#">Tags</a></li>
-    </ul>
-    <h3>Users</h3>
-    <ul class="toggle">
-        <li class="icn_add_user"><a href="#">Add New User</a></li>
-        <li class="icn_view_users"><a href="#">View Users</a></li>
-        <li class="icn_profile"><a href="#">Your Profile</a></li>
-    </ul>
     <h3>Admin</h3>
     <ul class="toggle">
-        <li class="icn_settings"><a href="#">Options</a></li>
-        <li class="icn_security"><a href="#">Security</a></li>
-        <li class="icn_jump_back"><a href="#">Logout</a></li>
+        <li class="icn_profile"><a href="#">Your Profile</a></li>
+        <li class="icn_add_user"><a href="https://www.facebook.com/groups/1576746889024748/members/">Add New Admin</a></li>
+        <li class="icn_jump_back"><a href="/logout">Logout</a></li>
+    </ul>
+    <h3>Go to</h3>
+    <ul class="toggle">
+        <li class="icn_view_users"><a href="/ban_list">Ban List</a></li>
+        <li class="history"><a href="/history">History</a></li>
     </ul>
 </aside><!-- end of sidebar -->
 
 <section id="main" class="column">
 
-    <h4 class="alert_info">Welcome a{ name }a (POST DELETED: a{ post_num }a  USER BAN: a{ user_num }a)</h4>
+    <h4 class="alert_info">Welcome a{ name }a (POST DELETED: a{ post_num }a USER BAN: a{ user_num }a)</h4>
 
     <div id="myModal" class="modal">
 
@@ -94,7 +84,8 @@
                 <option value="0">Ban (1 week) + Delete all prev posts</option>
             </select>
 
-            <textarea rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">He copy-pastes so much sometimes I think he has contracted a rare case of stutter-type
+            <textarea rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input"
+                      autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">He copy-pastes so much sometimes I think he has contracted a rare case of stutter-type
             </textarea>
             <button class="blue_btn" id="cf_reason" ng-click="confirmReason()"><strong>Confirm</strong></button>
         </div>

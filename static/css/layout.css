@@ -201,6 +201,7 @@ aside#sidebar {
     float: left;
     min-height: 500px;
     margin-top: -4px;
+    height:100%;
 }
 
 #sidebar hr {
@@ -322,6 +323,10 @@ aside#sidebar {
 
 #sidebar li.icn_view_users a {
     background: url(../images/icn_view_users.png) no-repeat center left;
+}
+
+#sidebar li.history a {
+    background: url(../images/history.png) no-repeat center left;
 }
 
 #sidebar li.icn_profile a {
