@@ -152,9 +152,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    session["current_user"] = "643833832487975"
-    session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
-    session['superstatus'] = "T"
+    # session["current_user"] = "643833832487975"
+    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
+    # session['superstatus'] = "T"
     # test
     return render_template("main.html")
 
