@@ -75,6 +75,7 @@ def return_data():
             real_post_id = post_to_delete["parent_id"] + "_" + post_id
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
                                 format(real_post_id, special_token))
+            admin_collection.update_one({"_id": admin_id}, {"$inc": {"post_deleted": 1}})
 
         elif type == 'user_ban':
             # add to history
@@ -91,6 +92,7 @@ def return_data():
             timeban = now.isoformat()
             banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name, "timeban": timeban})
             # delete on facebook + delete that single post, credited to computer
+            admin_collection.update_one({"_id": admin_id}, {"$inc": {"user_ban": 1}})
             if time_ban == '1':
                 real_post_id = post["parent_id"] + "_" + post_id
                 history.insert_one({"type": "POST DELETION",
@@ -206,18 +208,28 @@ def authentication_page():
 
 @app.route('/return_admin_info')
 def return_admin_info():
-    name = admin_collection.find_one({"_id": session["current_user"]})["name"]
-    post_deleted = len(list((history.find({"admin_id": session["current_user"], "type": "POST DELETION"}))))
-    user_banned = len(list(history.find({"admin_id": session["current_user"], "type": "USER BAN"})))
+    admin = admin_collection.find_one({"_id": session["current_user"]})
+    name = admin["name"]
+    post_deleted = admin["post_deleted"]
+    user_banned = admin["user_ban"]
     return dumps([name, session['image'], post_deleted, user_banned, session['superstatus'], session["current_user"]])
 
 
 @app.route("/return_admins")
 def return_admins():
-    return dumps([(admin["name"],
-                   len(list((history.find({"admin_id": admin["_id"], "type": "POST DELETION"})))),
-                   len(list(history.find({"admin_id": admin["_id"], "type": "USER BAN"}))))
-                  for admin in admin_collection.find({})])
+    namelist = []
+    post_stat = []
+    user_stat = []
+    for admin in admin_collection.find({}):
+        namelist.append(admin["name"])
+        post_stat.append(admin["post_deleted"])
+        user_stat.append(admin["user_ban"])
+    return dumps([namelist, post_stat, user_stat])
+
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 if __name__ == '__main__':
     app.run()
