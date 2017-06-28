@@ -107,7 +107,7 @@
                     <tr>
                         <th>User</th>
                         <th>ID</th>
-                        <th>Time</th>
+                        <th> Ban Time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -116,7 +116,7 @@
                             <button class="unbanButton" ng-click="openDialog($index, user._id, user.name)"></button>
                         </td>
                         <td> a{ user._id }a</td>
-                        <td> a{ user.createdAt.$date }a</td>
+                        <td> a{ user.timeban }a</td>
                     </tr>
                     </tbody>
                 </table>

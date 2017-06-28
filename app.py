@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBAIA197Buj6ALWZBEuqesRsVIjoeGaOs3r6WCbt7ZBIahGJybrgocLDIJq9fjZAJXWZAp5qyWkqMlq3bGcldBZA0liWXBCZCRgr86ZCIZCAVKY1hkzZA79ZCG9chU9Y7FoPzsvEHPXrtITD5m0kbmKreoj0wxtzY2Fr12exmaM458kV8KJj0whU4H0ZD"
+special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -87,7 +87,9 @@ def return_data():
             author_id = post['author_id']
             content = post["content"]
             history.insert_one({"type": "USER BAN", "admin_id": admin_id, "reason": reason, "author": author_name, "author_id": author_id})
-            banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name})
+            now = datetime.now()
+            timeban = now.isoformat()
+            banned_collection.insert_one({"_id": author_id, 'createdAt': datetime.utcnow(), "name": author_name, "timeban": timeban})
             # delete on facebook + delete that single post, credited to computer
             if time_ban == '1':
                 real_post_id = post["parent_id"] + "_" + post_id
@@ -160,9 +162,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    session["current_user"] = "643833832487975"
-    session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
-    session['superstatus'] = "T"
+    # session["current_user"] = "643833832487975"
+    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
+    # session['superstatus'] = "T"
     # test
     return render_template("main.html")
 

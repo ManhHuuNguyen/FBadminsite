@@ -19,7 +19,7 @@ computer_id = "1010101010101"
 group_id = "1576746889024748"
 app_id = "777625919075124"
 app_secret = "b9e7ab1c9eabeac21596486e39956faf"
-special_token = "EAACEdEose0cBAIA197Buj6ALWZBEuqesRsVIjoeGaOs3r6WCbt7ZBIahGJybrgocLDIJq9fjZAJXWZAp5qyWkqMlq3bGcldBZA0liWXBCZCRgr86ZCIZCAVKY1hkzZA79ZCG9chU9Y7FoPzsvEHPXrtITD5m0kbmKreoj0wxtzY2Fr12exmaM458kV8KJj0whU4H0ZD"
+special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
