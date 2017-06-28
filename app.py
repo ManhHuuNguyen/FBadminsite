@@ -139,7 +139,7 @@ def login():
 
 @app.route('/ban_list')
 def banlist():
-    return render_template("new_banlist.html")
+    return render_template("banlist.html")
 
 
 @app.route("/return_banlist")
