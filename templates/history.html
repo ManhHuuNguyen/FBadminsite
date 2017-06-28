@@ -93,7 +93,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="post in past_posts | filter: search">
+                    <tr ng-repeat="post in past_posts | filter: search | startFrom:currentPage*pageSize | limitTo:pageSize">
                         <td>a{ post.type }a</td>
                         <td> a{ post.content }a</td>
                         <td> a{ post.author_id }a</td>
@@ -104,10 +104,23 @@
                 </table>
             </div><!-- end of #tab1 -->
 
-
         </div><!-- end of .tab_container -->
 
     </article><!-- end of content manager article -->
+
+    <div class="pagination">
+        <button style="float: right" ng-disabled="currentPage >= past_posts.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+            &raquo;
+        </button>
+        <div ng-repeat="i in range()" style="float: right">
+            <button style="float: right;" ng-click="$parent.currentPage=i" ng-disabled="$parent.currentPage==i">
+                a{ i+1 }a
+            </button>
+        </div>
+        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+            &laquo;
+        </button>
+    </div>
 </section>
 
 </body>

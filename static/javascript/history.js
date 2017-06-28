@@ -33,6 +33,24 @@ application.controller("myCtrl", function ($scope, $http) {
         console.log("Error");
     });
 
+    // start pagination implementation
+    $scope.currentPage = 0;
+    $scope.pageSize = 15;
+
+    $scope.range = function () {
+        var input = [];
+        var pages = Math.ceil($scope.past_posts.length/$scope.pageSize)-1;
+        for (var i = pages; i >=0; i -= 1) {
+            input.push(i);
+        }
+        return input;
+    };
+});
+application.filter('startFrom', function () {
+    return function (input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
 });
 
 

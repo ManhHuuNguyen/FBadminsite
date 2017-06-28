@@ -1048,3 +1048,13 @@ textarea:focus {
     -moz-box-shadow: 0 1px 1px #1a8cff;
     box-shadow: 0 1px 1px #0080ff;
 }
+
+.pagination{
+    display: inline-block;
+    margin-left: 42px;
+    margin-top: 20px;
+}
+
+.pagination button{
+    float: right;
+}
