@@ -11,7 +11,7 @@ application.config(['$interpolateProvider', function ($interpolateProvider) {
 application.controller("myCtrl", function ($scope, $http) {
 
     $scope.delete_index = null;
-    $scope.unban_author_id = null;
+    $scope.post_id = null;
     $scope.name = null;
 
     $http({
@@ -53,7 +53,7 @@ application.controller("myCtrl", function ($scope, $http) {
 
     $scope.openDialog = function (index_to_delete, unban_id, name) {
         $scope.delete_index = index_to_delete;
-        $scope.unban_author_id = unban_id;
+        $scope.post_id = unban_id;
         $scope.name = name;
         document.getElementById('myModal').style.display = "block";
     };
@@ -61,14 +61,14 @@ application.controller("myCtrl", function ($scope, $http) {
     $scope.closeDialog = function () {
         document.getElementById('myModal').style.display = "none";
         $scope.delete_index = null;
-        $scope.unban_author_id = null;
+        $scope.post_id = null;
         $scope.name = null;
     };
 
     $scope.confirmReason = function () {
         var reason = document.getElementById('comment_text').value;
         if (reason) {
-            $scope.un_ban($scope.unban_author_id, $scope.delete_index, $scope.name, reason);
+            $scope.un_ban($scope.post_id, $scope.delete_index, $scope.name, reason);
         }
         $scope.closeDialog();
     }

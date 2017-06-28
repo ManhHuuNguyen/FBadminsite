@@ -11,7 +11,7 @@ application.config(['$interpolateProvider', function ($interpolateProvider) {
 application.controller("myCtrl", function ($scope, $http) {
 
     $scope.delete_index = null;
-    $scope.unban_author_id = null;
+    $scope.post_id = null;
     $scope.decision = null;
 
     $http({
@@ -83,7 +83,7 @@ application.controller("myCtrl", function ($scope, $http) {
 
     $scope.openDialog = function (which, index_to_delete, post_id) {
         $scope.delete_index = index_to_delete;
-        $scope.unban_author_id = unban_author_id;
+        $scope.post_id = post_id;
         $scope.decision = which;
         document.getElementById('myModal').style.display = "block";
         if ($scope.decision=='ban'){
@@ -94,7 +94,7 @@ application.controller("myCtrl", function ($scope, $http) {
     $scope.closeDialog = function () {
         document.getElementById('myModal').style.display = "none";
         $scope.delete_index = null;
-        $scope.unban_author_id = null;
+        $scope.post_id = null;
         $scope.decision = null;
         document.getElementById("timeBan").style.visibility = "hidden";
     };
@@ -105,10 +105,10 @@ application.controller("myCtrl", function ($scope, $http) {
             if ($scope.decision=='ban'){
                 var e = document.getElementById("timeBan");
                 var timeBan = e.options[e.selectedIndex].value;
-                $scope.banUser($scope.delete_index, $scope.unban_author_id, reason, timeBan);
+                $scope.banUser($scope.delete_index, $scope.post_id, reason, timeBan);
             }
             else {
-                $scope.delPost($scope.unban_author_id, $scope.delete_index, reason);
+                $scope.delPost($scope.post_id, $scope.delete_index, reason);
             }
         }
         $scope.closeDialog();

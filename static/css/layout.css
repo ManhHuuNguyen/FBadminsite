@@ -900,12 +900,12 @@ fieldset textarea:focus {
 
 .unbanButton{
     background: url(../images/icn_unban.png) no-repeat;
-    width: 26px;
-    height: 27px;
+    width: 23px;
+    height: 23px;
     float: right;
     padding: 0;
     border: none;
-    margin-right: 130px;
+    margin-right: 260px;
 }
 
 .modal {
