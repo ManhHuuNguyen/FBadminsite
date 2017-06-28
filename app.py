@@ -11,7 +11,7 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBACi0XDRqlZBZB03v7mCRe9uTgnkAb9JAOqp571ew4NvaIZARpY6kTsJQd4j3Nkb6ZAWPM0UxEcoDqKvZBYB9Q1ZCoNqPjThh7egtkMZA5P91b05eqeYTWnNda9Fxzm0MyaDgZCYZCGlBBNDip3dAwfB0aZA8ojkXYFOZAUR9IkicVRVdxvg8JYYHdcZD"
+special_token = "EAACEdEose0cBAIA197Buj6ALWZBEuqesRsVIjoeGaOs3r6WCbt7ZBIahGJybrgocLDIJq9fjZAJXWZAp5qyWkqMlq3bGcldBZA0liWXBCZCRgr86ZCIZCAVKY1hkzZA79ZCG9chU9Y7FoPzsvEHPXrtITD5m0kbmKreoj0wxtzY2Fr12exmaM458kV8KJj0whU4H0ZD"
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -117,6 +117,14 @@ def return_data():
 
         elif type == "unban":
             user_id = json_post.get("id")
+            reason = json_post.get('reason')
+            name = json_post.get('name')
+            history.insert_one({"type": "USER UNBAN",
+                                "admin_id": session["current_user"],
+                                "reason": reason,
+                                "author": name,
+                                "author_id": user_id,
+                                "content": ""})
             banned_collection.delete_one({"_id": user_id})
         return "Log in successfully. Congrats!"
 
@@ -129,7 +137,7 @@ def login():
 
 @app.route('/ban_list')
 def banlist():
-    return render_template("ban_list.html")
+    return render_template("new_banlist.html")
 
 
 @app.route("/return_banlist")
@@ -152,9 +160,9 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    # session["current_user"] = "643833832487975"
-    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
-    # session['superstatus'] = "T"
+    session["current_user"] = "643833832487975"
+    session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
+    session['superstatus'] = "T"
     # test
     return render_template("main.html")
 

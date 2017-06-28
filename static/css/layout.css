@@ -341,6 +341,10 @@ aside#sidebar {
     background: url(../images/icn_photo.png) no-repeat center left;
 }
 
+#sidebar li.icn_dashboard a {
+    background: url(../images/icn_categories.png) no-repeat center left;
+}
+
 #sidebar li.icn_audio a {
     background: url(../images/icn_audio.png) no-repeat center left;
 }
@@ -892,6 +896,16 @@ fieldset textarea:focus {
     padding: 0;
     border: none;
     margin-right: 15px;
+}
+
+.unbanButton{
+    background: url(../images/icn_unban.png) no-repeat;
+    width: 26px;
+    height: 27px;
+    float: right;
+    padding: 0;
+    border: none;
+    margin-right: 130px;
 }
 
 .modal {
