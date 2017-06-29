@@ -67,12 +67,8 @@
     {#    <h4 class="alert_info">Welcome a{ name }a (POST DELETED: a{ post_num }a USER BAN: a{ user_num }a)</h4>#}
 
     <article class="module width_full">
-        <header><h3>Stats</h3></header>
+        <header><h3>Your Stats</h3></header>
         <div class="module_content">
-            <article class="stats_graph">
-                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-            </article>
-
             <article class="stats_overview">
                 <div class="overview_today">
                     <p class="overview_day">POST DELETED</p>
@@ -88,6 +84,48 @@
             <div class="clear"></div>
         </div>
     </article><!-- end of stats article -->
+
+    <article class="module width_3_quarter">
+        <header><h3 class="tabs_involved">Content Manager</h3>
+            <ul class="tabs">
+                <li><a href="#tab1">Admin lists</a></li>
+            </ul>
+        </header>
+
+        <div class="tab_container">
+            <div id="tab1" class="tab_content">
+                <table class="tablesorter" cellspacing="0">
+
+                    <colgroup>
+                        <col span="1" style="width: 50%;">
+                        <col span="1" style="width: 25%;">
+                        <col span="1" style="width: 12.5%;">
+                        <col span="1" style="width: 12.5%">
+                    </colgroup>
+
+                    <thead>
+                    <tr>
+                        <th>ADMIN</th>
+                        <th>ID</th>
+                        <th> POST DELETED</th>
+                        <th>USER BAN</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="admin in admins | filter: search">
+                        <td><a href="https://www.facebook.com/a{ admin._id }a"> a{ admin.name }a </a></td>
+                        <td> a{ admin._id }a</td>
+                        <td> a{ admin.post_deleted }a</td>
+                        <td>a{ admin.user_ban }a</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!-- end of #tab1 -->
+
+
+        </div><!-- end of .tab_container -->
+
+    </article><!-- end of content manager article -->
 
 </section>
 </body>

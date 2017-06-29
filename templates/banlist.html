@@ -112,7 +112,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in banned_users | filter: search">
-                        <td>a{ user.name }a
+                        <td><a href="https://www.facebook.com/a{ user._id }a">a{ user.name }a</a>
                             <button class="unbanButton" ng-click="openDialog($index, user._id, user.name)"></button>
                         </td>
                         <td> a{ user._id }a</td>

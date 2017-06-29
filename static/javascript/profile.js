@@ -29,9 +29,7 @@ application.controller("myCtrl", function ($scope, $http) {
         method: 'GET',
         url: '/return_admins'
     }).then(function successCallback(response) {
-        $scope.namelist = response.data[0];
-        $scope.post_stat = response.data[1];
-        $scope.user_stat = response.data[2];
+        $scope.admins = response.data;
     }, function errorCallback(response) {
         console.log("Error");
     });

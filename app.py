@@ -17,7 +17,7 @@ special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm
 connection = pymongo.MongoClient(config.host, config.port)
 db = connection["adminsitedb"]
 db.authenticate(config.db_name, config.db_password)
-superadmin_list = ["627528440778188", "643833832487975"]
+superadmin_list = ["627528440778188"]
 computer_id = "1010101010101"
 
 post_collection = db['posts']
@@ -217,14 +217,7 @@ def return_admin_info():
 
 @app.route("/return_admins")
 def return_admins():
-    namelist = []
-    post_stat = []
-    user_stat = []
-    for admin in admin_collection.find({}):
-        namelist.append(admin["name"])
-        post_stat.append(admin["post_deleted"])
-        user_stat.append(admin["user_ban"])
-    return dumps([namelist, post_stat, user_stat])
+    return dumps([admin for admin in admin_collection.find({})])
 
 
 @app.route("/profile")
