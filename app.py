@@ -13,6 +13,9 @@ oauth = OAuth()
 # special token for delete only
 special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
+# for pagination
+post_per_page = 5
+
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
 db = connection["adminsitedb"]
@@ -156,17 +159,30 @@ def history_page():
 
 @app.route("/return_history")
 def return_history():
+    page_num = int(request.args.getlist("page")[0])
+    all_item_number = history.count()
+    to_skip = all_item_number - (page_num + 1) * post_per_page
+    print(to_skip)
     if session['superstatus'] == 'F':
-        return dumps([item for item in history.find({"admin_id": session["current_user"]})])
-    return dumps(item for item in history.find({}))
+        if to_skip < 0:
+            items = reversed(list(history.find({"admin_id": session["current_user"]}).limit(post_per_page+to_skip)))
+        else:
+            items = reversed(list(history.find({"admin_id": session["current_user"]}).skip(to_skip).limit(post_per_page)))
+        return dumps([items, all_item_number])
+    else:
+        if to_skip < 0:
+            items = reversed(list(history.find({}).limit(post_per_page+to_skip)))
+        else:
+            items = reversed(list(history.find({}).skip(to_skip).limit(post_per_page)))
+        return dumps([items, all_item_number])
 
 
 @app.route("/main")
 def mainpage():
     # test
-    # session["current_user"] = "643833832487975"
-    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
-    # session['superstatus'] = "T"
+    session["current_user"] = "643833832487975"
+    session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
+    session['superstatus'] = "T"
     # test
     return render_template("main.html")
 

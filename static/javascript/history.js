@@ -12,9 +12,11 @@ application.controller("myCtrl", function ($scope, $http) {
 
     $http({
         method: 'GET',
-        url: '/return_history'
+        url: '/return_history',
+        params: {"page": 0}
     }).then(function successCallback(response) {
-        $scope.past_posts = response.data;
+        $scope.past_posts = response.data[0];
+        $scope.numberOfPosts = response.data[1];
     }, function errorCallback(response) {
         console.log("Error");
     });
@@ -34,17 +36,30 @@ application.controller("myCtrl", function ($scope, $http) {
     });
 
     // start pagination implementation
-    $scope.currentPage = 0;
-    $scope.pageSize = 15;
+    $scope.pageSize = 5;
 
     $scope.range = function () {
         var input = [];
-        var pages = Math.ceil($scope.past_posts.length/$scope.pageSize)-1;
-        for (var i = pages; i >=0; i -= 1) {
+        var pages = Math.ceil($scope.numberOfPosts / $scope.pageSize) - 1;
+        for (var i = pages; i >= 0; i -= 1) {
             input.push(i);
         }
         return input;
     };
+
+    $scope.getPosts = function (pageNum) {
+        var lastPageNum = Math.ceil($scope.numberOfPosts / $scope.pageSize) - 1;
+        $http({
+            method: 'GET',
+            url: '/return_history',
+            params: {"page": lastPageNum-pageNum}
+        }).then(function successCallback(response) {
+            $scope.past_posts = response.data[0];
+            $scope.numberOfPosts = response.data[1];
+        }, function errorCallback(response) {
+            console.log("Error");
+        });
+    }
 });
 application.filter('startFrom', function () {
     return function (input, start) {
