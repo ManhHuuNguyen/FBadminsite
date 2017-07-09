@@ -36,7 +36,7 @@ application.controller("myCtrl", function ($scope, $http) {
     });
 
     // start pagination implementation
-    $scope.pageSize = 5;
+    $scope.pageSize = 10;
 
     $scope.range = function () {
         var input = [];
@@ -67,5 +67,3 @@ application.filter('startFrom', function () {
         return input.slice(start);
     }
 });
-
-

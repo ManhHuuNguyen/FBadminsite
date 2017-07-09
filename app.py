@@ -14,7 +14,7 @@ oauth = OAuth()
 special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
 # for pagination
-post_per_page = 5
+post_per_page = 10
 
 # connect to database
 connection = pymongo.MongoClient(config.host, config.port)
@@ -144,7 +144,10 @@ def login():
 
 @app.route('/ban_list')
 def banlist():
-    return render_template("banlist.html")
+    if session["current_user"]:
+        return render_template("banlist.html")
+    else:
+        return render_template("bad_request.html")
 
 
 @app.route("/return_banlist")
@@ -154,7 +157,10 @@ def return_banlist():
 
 @app.route("/history")
 def history_page():
-    return render_template("history.html")
+    if session["current_user"]:
+        return render_template("history.html")
+    else:
+        return render_template("bad_request.html")
 
 
 @app.route("/return_history")
@@ -180,11 +186,14 @@ def return_history():
 @app.route("/main")
 def mainpage():
     # test
-    session["current_user"] = "643833832487975"
-    session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
-    session['superstatus'] = "T"
+    # session["current_user"] = "643833832487975"
+    # session["image"] = "https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/10696343_287006974837331_256486935600665516_n.jpg?oh=8fcd53c6c3ff46587379e0ef11f4751c&oe=59CDEFDE"
+    # session['superstatus'] = "T"
     # test
-    return render_template("main.html")
+    if session["current_user"]:
+        return render_template("main.html")
+    else:
+        return render_template("bad_request.html")
 
 
 @app.route("/logout")
