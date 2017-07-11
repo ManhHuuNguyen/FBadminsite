@@ -21,15 +21,17 @@ Install $project by running:
 - Create a collection inside the database named timestamp.
 - In timestamp collection add a document: {"last_time": "1"}
 - Add environment variable to heroku environment:
-		APP_ID = {your facebook app id} 
-		APP_SECRET = {your facebook app secret}
-		db_name = {your mlab's admin name, not to be confused with your mlab's account's name} You can find it on mlab database's user tab 
-		db_password {your mlab's admin password, not to be confused with your mlab's account's password} You can find it on mlab's database user tab 
-		GROUP_ID = {Your facebook group id}
-		host = {your mlab assigned host} i.e. ds111262.mlab.com 
-		port = {your mlab assigned port} i.e. 11260
-		secret_key = {your flask secret key} you could invent one yourself, as randomly as possible
-		special_token = {your temporary facebook graph api user access token with all permission granted}
+
+    - APP_ID = {your facebook app id}
+    - APP_SECRET = {your facebook app secret}
+    - db_name = {your mlab's admin name, not to be confused with your mlab's account's name} You can find it on mlab database's user tab
+    - db_password {your mlab's admin password, not to be confused with your mlab's account's password} You can find it on mlab's database user tab
+    - GROUP_ID = {Your facebook group id}
+    - host = {your mlab assigned host} i.e. ds111262.mlab.com
+    - port = {your mlab assigned port} i.e. 11260
+    - secret_key = {your flask secret key} you could invent one yourself, as randomly as possible
+    - special_token = {your temporary facebook graph api user access token with all permission granted}
+
 - Go to file env_var.json and fill in similar variable
 - Run cron_script.py file to update all previous posts/comments
 - Add a cron job to run cron_script.py every five minutes
