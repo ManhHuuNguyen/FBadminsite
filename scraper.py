@@ -1,55 +1,138 @@
 from facepy import GraphAPI
-import config
+import pymongo
+import requests
 
-group_id = config.GROUP_ID
-app_id = config.APP_ID
-app_secret = config.APP_SECRET
+connection = pymongo.MongoClient("ds111262.mlab.com", 11262)
+db = connection["adminsitedb"]
+db.authenticate("admin", "admin")
+post_collection = db['posts']
+allpost_collection = db["all_posts"]
+banned_collection = db['the_condemned']
+history = db['history']
+computer_id = "1010101010101"
+
+group_id = "1576746889024748"
+app_id = "777625919075124"
+app_secret = "b9e7ab1c9eabeac21596486e39956faf"
+special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
 
+bad_word_repertoire = ["dm", "dcm", "fuck", "ong chu viettel", "vcl", "filter"]
+
+
+def content_filter(string):
+    return any([bad_word in string.lower() for bad_word in bad_word_repertoire])
+
 
 def get_comments(_id, list_of_comments):
-    comments = graph.get(_id + "/comments?limit=50&time_format=U&fields=created_time,message,id,from", page=True,
-                         retry=3, limit=1000)
+    comments = graph.get(
+        _id + "/comments?limit=50&time_format=U&fields=created_time,message,id,from", page=True,
+        retry=3, limit=1000)
     for cmt in comments:
         comment_content = cmt['data']
+        for each_comment in comment_content:
+            each_comment["parent_id"] = _id.split("_")[1]
         list_of_comments += comment_content
         for content in comment_content:
             comments2 = graph.get(
-                content['id'] + "/comments?limit=50&time_format=U&fields=created_time,message,id,from", page=True,
+                content[
+                    'id'] + "/comments?limit=50&time_format=U&fields=created_time,message,id,from",
+                page=True,
                 retry=3, limit=1000)
             for cmt2 in comments2:
                 comment_content2 = cmt2['data']
+                for each_comment in comment_content2:
+                    each_comment["parent_id"] = _id.split("_")[1]
                 list_of_comments += comment_content2
 
 
 def crawl_the_group():
     list_of_posts = []
     list_of_comments = []
-    list_of_users = []
-    users = graph.get(group_id + "/members", page=True, retry=3, limit=10000)
-    for user in users:
-        list_of_users += user['data']
-    pages = graph.get(group_id + "/feed?limit=50&time_format=U&fields=created_time,message,id,from", page=True, retry=3,
+
+    pages = graph.get(group_id + "/feed?limit=50&time_format=U&fields=created_time,message,id,from",
+                      page=True, retry=3,
                       limit=1000)
-    i = 0
+
     for pg in pages:
-        print("pg " + str(i))
-        i += 1
         post_content = pg['data']
         if len(post_content) != 0:
             list_of_posts += post_content
             for post in post_content:
                 post_id = post['id']
                 get_comments(post_id, list_of_comments)
-    return list_of_posts, list_of_comments, list_of_users
+    return list_of_posts, list_of_comments
 
 
-# post_list, cmt_list, user_list = crawl_the_group()
-# for cmt in cmt_list:
-#     print(cmt)
-# for post in post_list:
-#     print(post)
-# for user in user_list:
-#     print(user)
+post_list, cmt_list = crawl_the_group()
+
+for post in post_list:
+    try:
+        # check for banned user
+        banned = banned_collection.find_one({"_id": post["from"]["id"]})
+        if banned:
+            # regardless of its status, delete and credit to computer
+            history.insert_one({"type": "POST DELETION",
+                                "admin_id": computer_id,
+                                "reason": "author already banned",
+                                "author": post["from"]["name"],
+                                "author_id": post["from"]["id"],
+                                "content": post["message"]})
+            r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                format(post["id"], special_token))
+        else:
+            # the smell test
+            if content_filter(post["message"]):
+                post_collection.update({"_id": post["id"].split("_")[1]},
+                                       {"$set": {"content": post["message"],
+                                                 "author": post["from"]["name"],
+                                                 "author_id": post["from"]["id"],
+                                                 "time": post["created_time"],
+                                                 "parent_id": "1576746889024748"}}, upsert=True)
+            # pass smell test or not, add it to all post (not happens to banned user posts, which are automatically deleted)
+            allpost_collection.update({"_id": post["id"].split("_")[1]},
+                                      {"$set": {"content": post["message"],
+                                                "author": post["from"]["name"],
+                                                "author_id": post["from"]["id"],
+                                                "time": post["created_time"],
+                                                "parent_id": "1576746889024748"}}, upsert=True)
+
+    except KeyError:
+        pass
+
+for comment in cmt_list:
+    try:
+        # check for banned user
+        banned = banned_collection.find_one({"_id": comment["from"]["id"]})
+        if banned:
+            # regardless of its status, delete and credit to computer
+            history.insert_one({"type": "POST DELETION",
+                                "admin_id": computer_id,
+                                "reason": "author already banned",
+                                "author": comment["from"]["name"],
+                                "author_id": comment["from"]["id"],
+                                "content": comment["message"]})
+            real_post_id = comment["parent_id"] + "_" + comment["id"]
+            r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
+                                format(real_post_id, special_token))
+        else:
+            # the smell test
+            if content_filter(comment["message"]):
+                post_collection.update({"_id": comment["id"]},
+                                       {"$set": {"content": comment["message"],
+                                                 "author": comment["from"]["name"],
+                                                 "author_id": comment["from"]["id"],
+                                                 "time": comment["created_time"],
+                                                 "parent_id": comment["parent_id"]}}, upsert=True)
+            # pass smell test or not, add it to all post (not happens to banned user posts, which are automatically deleted)
+            allpost_collection.update({"_id": comment["id"]},
+                                      {"$set": {"content": comment["message"],
+                                                "author": comment["from"]["name"],
+                                                "author_id": comment["from"]["id"],
+                                                "time": comment["created_time"],
+                                                "parent_id": comment["parent_id"]}}, upsert=True)
+
+    except KeyError:
+        pass
