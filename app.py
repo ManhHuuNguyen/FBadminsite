@@ -17,7 +17,7 @@ special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm
 post_per_page = 10
 
 # connect to database
-connection = pymongo.MongoClient(config.host, config.port)
+connection = pymongo.MongoClient(config.host, int(config.port))
 db = connection["adminsitedb"]
 db.authenticate(config.db_name, config.db_password)
 superadmin_list = ["627528440778188"]
