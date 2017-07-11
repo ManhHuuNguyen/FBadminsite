@@ -6,7 +6,7 @@ A site to facilitate the burden of managing large Facebook groups.
 
 Features
 --------
-- Automatically pull posts and comments from facebook group  
+- Automatically pull posts and comments from facebook group
 - Delete posts/comments
 - Ban/Unban user for an extended period of time
 - Automatically filter posts/comments from banned users or contain offensive content
