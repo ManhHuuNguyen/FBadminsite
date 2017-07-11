@@ -11,7 +11,6 @@ app = Flask(__name__)
 oauth = OAuth()
 
 # special token for delete only
-special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
 
 # for pagination
 post_per_page = 10
@@ -77,7 +76,7 @@ def return_data():
             # delete on fb
             real_post_id = post_to_delete["parent_id"] + "_" + post_id
             r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
-                                format(real_post_id, special_token))
+                                format(real_post_id, config.special_token))
             admin_collection.update_one({"_id": admin_id}, {"$inc": {"post_deleted": 1}})
 
         elif type == 'user_ban':
@@ -105,7 +104,7 @@ def return_data():
                                     "author_id": author_id,
                                     "content": content})
                 r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
-                                format(real_post_id, special_token))
+                                format(real_post_id, config.special_token))
 
             else:
                 # delete all posts that are in question (not every post literally), also credited to computer
@@ -118,7 +117,7 @@ def return_data():
                                         "author_id": author_id,
                                         "content": each[1]})
                     r = requests.delete("https://graph.facebook.com/{}?method=delete&access_token={}".
-                                        format(each[0], special_token))
+                                        format(each[0], config.special_token))
             # delete in db
             post_collection.delete_many({"author_id": author_id})
 
