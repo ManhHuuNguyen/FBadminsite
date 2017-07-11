@@ -38,9 +38,9 @@ Install $project by running:
 
 Further customization
 ------------
-To customize superadmins, add the facebook id (string type) of admin to the array(list) superadmin_list on line 22 in file app.py
-To customize your reasons (for ban/delete), look for tag select in file main.html from line 72 to line 80 
-To customize words that would trigger filter, look for array(list) bad_word_repertoire in file cron_script.py on line 30.
+- To customize superadmins, add the facebook id (string type) of admin to the array(list) superadmin_list on line 22 in file app.py
+- To customize your reasons (for ban/delete), look for tag select in file main.html from line 72 to line 80
+- To customize words that would trigger filter, look for array(list) bad_word_repertoire in file cron_script.py on line 30.
 
 Support
 -------
