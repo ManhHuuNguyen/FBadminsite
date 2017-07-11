@@ -5,10 +5,14 @@ from facepy import GraphAPI
 import time
 import pymongo
 import requests
+import json
 
-connection = pymongo.MongoClient("ds111262.mlab.com", 11262)
+json_data = open("env_var.json")
+d = json.load(json_data)
+
+connection = pymongo.MongoClient(d["host"], int(d["port"]))
 db = connection["adminsitedb"]
-db.authenticate("admin", "admin")
+db.authenticate(d["db_name"], d["db_password"])
 post_collection = db['posts']
 allpost_collection = db["all_posts"]
 banned_collection = db['the_condemned']
@@ -16,10 +20,10 @@ history = db['history']
 timestamp = db["timestamp"]
 computer_id = "1010101010101"
 
-group_id = "1576746889024748"
-app_id = "777625919075124"
-app_secret = "b9e7ab1c9eabeac21596486e39956faf"
-special_token = "EAACEdEose0cBAHy4B8EJHEkh3mS2BN1yzMYbYQilYS1OnIinEWPgAZAwBIFqVm4E5HY76jHm1MoZAAnZB28NagZAIzOJ8TcgSzhYxWooKHJlRiOvsB6rSZAZBD0yujoh7YyPhUus8OGDMqOwqzY000zFh2ijP1ZCB3XG7EFvQWx023mlFsnMBMBVPmda2ORKm0ZD"
+group_id = d["GROUP_ID"]
+app_id = d["APP_ID"]
+app_secret = d["APP_SECRET"]
+special_token = d["special_token"]
 
 access_token = app_id + "|" + app_secret
 graph = GraphAPI(access_token)
